@@ -1,6 +1,11 @@
 :root {
-  --bg-primary: #ffff;
-  --bg-secondary: #eeee;
+  --bg-primary: #f9f9f9;
+  --bg-secondary: #eee;
+
+  --white: #f9f9f9;
+  --black: #000;
+
+  --text-color: #000;
 }
 
 body {
@@ -10,6 +15,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  background-color: var(--bg-primary);
+  color: var(--text-color);
 }
 
 code {
@@ -20,6 +28,7 @@ code {
 .container {
   width: 90%;
   margin: 0 auto;
+  max-width: 1450px;
 }
 
 @media screen and (min-width: 700px) {
