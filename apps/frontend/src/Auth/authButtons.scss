@@ -1,0 +1,23 @@
+.auth__buttons {
+  button {
+    color: var(--white);
+    display: inline-flex;
+    width: 50%;
+
+    font-weight: bold;
+
+    svg {
+      width: 22.5px;
+      height: 22.5px;
+      margin-right: 5px;
+    }
+  }
+  &-google {
+    background: none;
+    background-color: rgb(189, 28, 28);
+  }
+
+  &-facebook {
+    background-color: #1c19be;
+  }
+}

@@ -1,17 +1,25 @@
+import Button from "@/components/Button";
 import { Link } from "react-router-dom";
+
+interface NavItemProps {
+  children?: any;
+  href?: string;
+}
 
 export default function NavItem({
   children,
   href = "/",
-}: {
-  children?: any;
-  href?: string;
-}) {
+  ...rest
+}: NavItemProps | any) {
   return (
     <li className="nav__item">
-      <Link className="nav__link" to={href}>
-        {children}
-      </Link>
+      {href ? (
+        <Link className="nav__link" to={href} {...rest}>
+          {children}
+        </Link>
+      ) : (
+        <Button {...rest}>{children}</Button>
+      )}
     </li>
   );
 }

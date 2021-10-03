@@ -1,37 +1,18 @@
 import "./navbar.scss";
-import ShowMoreIcon from "../Icons/ShowMoreIcon";
-import NavItem from "./components/NavItem";
 import { createRef } from "react";
+import ShowMoreIcon from "../Icons/ShowMoreIcon";
+import WithAuth from "./components/WithAuth";
+import WithoutAuth from "./components/WithoutAuth";
 
-const withoutAuth = () => (
-  <>
-    <NavItem href="/login">Iniciar Sessión</NavItem>
-    <NavItem href="/register">Registrarse</NavItem>
-  </>
-);
-
-const withAuth = (user: any) => (
-  <>
-    <NavItem href="/profile">
-      <div className="nav__user nav__user-w">
-        <img src={user.avatar} alt={user.name} />
-        <div className="nav__profile">
-          <span className="nav__profile-bold">{user.name}</span>
-          <span className="nav__profile-lighter">Ver Perfil</span>
-        </div>
-      </div>
-    </NavItem>
-    <NavItem href="/settings">Configuración</NavItem>
-  </>
-);
+import useUser from "@/hooks/useUser";
 
 export default function Navbar() {
-  const auth = true;
+  const user = useUser();
   const listRef = createRef<HTMLUListElement>();
 
   return (
     <nav className="nav">
-      {auth && (
+      {user && (
         <div className="nav__user">
           <ShowMoreIcon
             onClick={() => {
@@ -40,16 +21,18 @@ export default function Navbar() {
               );
             }}
           />
-          <img src="https://picsum.photos/200" />
+          <img src={user.avatar} />
         </div>
       )}
       <ul
         ref={listRef}
-        className={`nav__list${auth ? " nav__list-authenticated" : ""}`}
+        className={`nav__list${user ? " nav__list-authenticated" : ""}`}
       >
-        {auth
-          ? withAuth({ avatar: "https://picsum.photos/200", name: "User Test" })
-          : withoutAuth()}
+        {user ? (
+          <WithAuth avatar={user.avatar} name={user.name} />
+        ) : (
+          <WithoutAuth />
+        )}
       </ul>
     </nav>
   );

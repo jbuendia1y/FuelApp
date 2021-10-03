@@ -1,3 +1,4 @@
+import useUser from "@/hooks/useUser";
 import { createRef } from "react";
 import Button from "../Button";
 import MenuIcon from "../Icons/MenuIcon";
@@ -5,12 +6,12 @@ import SidenavItem from "./components/sidenavItem";
 import "./sidenav.scss";
 
 export default function Sidenav() {
-  const auth = false;
+  const user = useUser();
   const sidenavRef = createRef<HTMLDivElement>();
 
   return (
     <>
-      {auth && (
+      {user && (
         <>
           <Button
             onClick={() => {

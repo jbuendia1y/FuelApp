@@ -1,0 +1,38 @@
+.auth {
+  height: 90vh;
+  display: grid;
+  place-content: center;
+  place-items: center;
+
+  background-image: url("https://raw.githubusercontent.com/jbuendia1y/FuelApp/main/assets/pexels-skitterphoto-9796.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  &-box {
+    padding: 10px 15px;
+    height: 80vh;
+
+    background-color: var(--bg-primary);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .form {
+      width: 300px;
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      text-align: center;
+      justify-content: center;
+    }
+  }
+}
+
+@media screen and (min-width: 400px) {
+  .auth {
+    &-box {
+      box-shadow: 0 5px 10px rgba(172, 172, 172, 0.74);
+    }
+  }
+}

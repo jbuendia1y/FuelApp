@@ -15,11 +15,6 @@
 
   cursor: pointer;
 
-  svg {
-    margin-right: 5px;
-    max-width: 35px;
-  }
-
   &:hover {
     transition: filter 0.25s ease;
     filter: brightness(0.8);
