@@ -7,10 +7,19 @@ export default function AuthRegister() {
   return (
     <>
       <Form
-        validate={(data) => {
+        validate={(data: { email: string; password: string; name: string }) => {
           registerWithEmailAndPassword(data);
         }}
       >
+        <FormField>
+          <FormLabel htmlFor="name">Name</FormLabel>
+          <FormInput
+            type="text"
+            id="name"
+            name="name"
+            placeholder="nombre completo"
+          />
+        </FormField>
         <FormField>
           <FormLabel htmlFor="email">Email</FormLabel>
           <FormInput

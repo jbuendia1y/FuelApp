@@ -6,7 +6,4 @@ export interface FormProps
   validate?: (data: any) => void;
 }
 
-export interface FormInputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "onChange"> {
-  validate?: (value: any) => void;
-}
+export interface FormInputProps extends InputHTMLAttributes<HTMLInputElement> {}

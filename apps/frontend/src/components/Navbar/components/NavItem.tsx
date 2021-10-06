@@ -1,3 +1,4 @@
+import "./navItem.scss";
 import Button from "@/components/Button";
 import { Link } from "react-router-dom";
 
@@ -8,7 +9,7 @@ interface NavItemProps {
 
 export default function NavItem({
   children,
-  href = "/",
+  href,
   ...rest
 }: NavItemProps | any) {
   return (
@@ -18,7 +19,7 @@ export default function NavItem({
           {children}
         </Link>
       ) : (
-        <Button {...rest}>{children}</Button>
+        <>{children}</>
       )}
     </li>
   );

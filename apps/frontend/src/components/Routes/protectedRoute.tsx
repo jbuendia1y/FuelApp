@@ -9,7 +9,7 @@ export default function ProtectedRoute({
 }: ProtectedRouteProps) {
   return (
     <Route path={path} {...rest}>
-      {!isAuth && <Redirect to="/login" />}
+      {isAuth === null && <Redirect to="/login" />}
       {children}
     </Route>
   );

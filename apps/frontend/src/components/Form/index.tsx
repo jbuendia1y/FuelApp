@@ -55,14 +55,11 @@ export function FormLabel({
   );
 }
 
-export function FormInput({ className, validate, ...rest }: FormInputProps) {
+export function FormInput({ className, ...rest }: FormInputProps) {
   return (
     <input
       className={`form__input${className ? ` ${className}` : ""}`}
       {...rest}
-      onChange={(e) => {
-        if (validate) validate(e.target.value);
-      }}
     />
   );
 }

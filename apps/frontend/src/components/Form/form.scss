@@ -20,7 +20,7 @@
     border-radius: 5px;
 
     &:focus {
-      outline: 2px solid var(--bg-primary);
+      outline: 0 solid transparent;
     }
   }
 }

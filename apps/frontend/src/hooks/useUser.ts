@@ -1,12 +1,8 @@
-import { onAuthChanged } from "@/firebase/client";
-import { useEffect, useState } from "react";
+import UserContext from "@/contexts/UserContext";
+import { useContext } from "react";
 
 export default function useUser() {
-  const [user, setUser] = useState<any>(null);
-
-  useEffect(() => {
-    onAuthChanged(setUser);
-  }, []);
+  const user = useContext(UserContext);
 
   return user;
 }

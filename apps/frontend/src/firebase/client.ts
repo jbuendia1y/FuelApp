@@ -9,7 +9,13 @@ import {
   signOut,
 } from "firebase/auth";
 
-import { getFirestore, collection } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  getFirestore,
+} from "firebase/firestore";
 
 const firebaseConfig: FirebaseOptions = {
   apiKey: "AIzaSyAURK55AWG5bl6CVv62BdFnRQbrdMwmFXk",
@@ -21,27 +27,46 @@ const firebaseConfig: FirebaseOptions = {
   measurementId: "G-S2FQMF7PVD",
 };
 
-const firebaseApp =
+export const firebaseApp =
   getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
-const firestore = getFirestore(firebaseApp);
 
-const normalizeUserToObj = (user: any) => {
+export const db = getFirestore(firebaseApp);
+
+export const updateUserData = async (user: any, update?: boolean) => {
+  const userRef = doc(db, "users", user.uid);
+  const usersDoc = await getDoc(userRef);
+  if (usersDoc.exists()) {
+    if (update) {
+      await updateDoc(userRef, user);
+    } else return usersDoc.data();
+  }
+  await setDoc(userRef, user);
+  return normalizeUserToObj(user);
+};
+
+const normalizeUserToObj = (user: null | any) => {
   if (!user) return user;
+
+  localStorage.setItem("firebase-token", user.accessToken);
   return {
-    avatar: user.photoURL,
-    name: user.displayName,
+    avatar: user.photoURL ? user.photoURL : "https://picsum.photos/100",
+    name: user.displayName ? user.displayName : "Lorem Picsum",
     email: user.email,
+    uid: user.uid,
+    phone: user.phoneNumber ? user.phoneNumber : "+XX XXX XXX XXX",
   };
 };
 
 export const loginWithGoogle = () => {
   const googleProvider = new GoogleAuthProvider();
-  return signInWithPopup(getAuth(firebaseApp), googleProvider).then(
-    normalizeUserToObj
-  );
+  return signInWithPopup(getAuth(firebaseApp), googleProvider);
 };
 
-export const loginWithEmailAndPassword = (user: {
+export const fetchCurrentUser = () => {
+  return getAuth(firebaseApp).currentUser;
+};
+
+export const loginWithEmailAndPassword = async (user: {
   email: string;
   password: string;
 }) => {
@@ -55,6 +80,7 @@ export const loginWithEmailAndPassword = (user: {
 export const registerWithEmailAndPassword = (user: {
   email: string;
   password: string;
+  name: string;
 }) => {
   return createUserWithEmailAndPassword(
     getAuth(firebaseApp),
@@ -64,27 +90,16 @@ export const registerWithEmailAndPassword = (user: {
 };
 
 export const userLogout = () => {
+  localStorage.removeItem("firebase-token");
   return signOut(getAuth(firebaseApp));
 };
 
 export const onAuthChanged = (onChange: (user: any) => void) => {
   return onAuthStateChanged(getAuth(firebaseApp), (user) => {
-    return onChange(normalizeUserToObj(user));
+    const data = normalizeUserToObj(user);
+    if (data) {
+      if (data.uid) updateUserData(data).then(onChange);
+      else onChange(data);
+    } else onChange(data);
   });
-};
-
-export const addRegister = (data: {
-  horometro: number;
-  pagoTotal: number;
-  kmRecorridos: number;
-}) => {
-  return data;
-};
-
-export const fetchRegister = (id: string) => {
-  return id;
-};
-
-export const fetchRegisters = () => {
-  return "Hello World";
 };
