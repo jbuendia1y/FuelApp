@@ -97,9 +97,7 @@ export const userLogout = () => {
 export const onAuthChanged = (onChange: (user: any) => void) => {
   return onAuthStateChanged(getAuth(firebaseApp), (user) => {
     const data = normalizeUserToObj(user);
-    if (data) {
-      if (data.uid) updateUserData(data).then(onChange);
-      else onChange(data);
-    } else onChange(data);
+    if (data) if (data.uid) updateUserData(data).then(onChange);
+    onChange(data);
   });
 };

@@ -1,16 +1,12 @@
 import {
   collection,
   getDocs,
-  getFirestore,
   limit,
   orderBy,
   query,
   Timestamp,
   addDoc,
-  getDoc,
   where,
-  doc,
-  updateDoc,
 } from "@firebase/firestore";
 import {
   computeKmPorGalon,
@@ -22,14 +18,26 @@ import { FuelPerformanceDoc, FuelPerformanceForm } from "./interfaces";
 import { db } from "../client";
 
 export const firestoreCollections = {
-  FuelPerformance: "fuel-performance",
+  //For Users
   Users: "users",
+  User: function (uid: string) {
+    return this.Users + "/" + uid;
+  },
+  UserFuelsPerformance: function (uid: string) {
+    return this.User(uid) + "/fuels-performance";
+  },
+
+  // For Enterprises
+  Enterprises: "enterprises",
+  Enterprise: function (enterpriseId: string) {
+    return this.Enterprises + "/" + enterpriseId;
+  },
 };
 
 const fetchLastFormDoc = async (userId: string) => {
   const fuelPerformanceReference = collection(
     db,
-    firestoreCollections.FuelPerformance
+    firestoreCollections.UserFuelsPerformance(userId)
   );
   const lastFormQuery = query(
     fuelPerformanceReference,
@@ -67,7 +75,10 @@ const computeFuelForm = async (formData: FuelPerformanceForm) => {
 };
 
 export const addRegister = async (data: FuelPerformanceForm) => {
-  const fuelPerformance = collection(db, firestoreCollections.FuelPerformance);
+  const fuelPerformance = collection(
+    db,
+    firestoreCollections.UserFuelsPerformance(data.userId)
+  );
   return await addDoc(fuelPerformance, await computeFuelForm(data));
 };
 
@@ -76,7 +87,10 @@ export const fetchRegister = (id: string) => {
 };
 
 export const fetchHistoric = async (uid: string) => {
-  const fuelPerformance = collection(db, firestoreCollections.FuelPerformance);
+  const fuelPerformance = collection(
+    db,
+    firestoreCollections.UserFuelsPerformance(uid)
+  );
   const docsQuery = query(fuelPerformance, where("userId", "==", uid));
   return await getDocs(docsQuery).then((res) => res.docs);
 };
