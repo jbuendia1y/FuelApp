@@ -32,6 +32,10 @@ export default function Routes() {
           <Profile />
         </ProtectedRoute>
 
+        <ProtectedRoute path="/enterprises" isAuth={user} exact>
+          <Enterprises />
+        </ProtectedRoute>
+
         <Route path="*">
           <PageNotFound />
         </Route>
