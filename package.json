@@ -16,5 +16,8 @@
     "combustible"
   ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "xlsx": "^0.17.2"
+  }
 }

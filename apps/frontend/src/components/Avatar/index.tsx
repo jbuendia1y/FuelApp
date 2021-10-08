@@ -18,7 +18,10 @@ export default function Avatar({
         <span className="avatar__text-bold">{user.name}</span>
         <span className="avatar__text-lighter">{children}</span>
       </p>
-      <a className="avatar__link" href={"/profile/" + user.uid}>
+      <a
+        className="avatar__link"
+        href={"/profile" + `${user.uid ? `/${user.uid}` : ""}`}
+      >
         ver perfil
       </a>
     </div>

@@ -32,18 +32,6 @@ export const firebaseApp =
 
 export const db = getFirestore(firebaseApp);
 
-export const updateUserData = async (user: any, update?: boolean) => {
-  const userRef = doc(db, "users", user.uid);
-  const usersDoc = await getDoc(userRef);
-  if (usersDoc.exists()) {
-    if (update) {
-      await updateDoc(userRef, user);
-    } else return usersDoc.data();
-  }
-  await setDoc(userRef, user);
-  return normalizeUserToObj(user);
-};
-
 const normalizeUserToObj = (user: null | any) => {
   if (!user) return user;
 
@@ -94,10 +82,18 @@ export const userLogout = () => {
   return signOut(getAuth(firebaseApp));
 };
 
+const verifyUserDB = async (user: any) => {
+  const userRef = doc(db, "users", user.uid);
+  const usersDoc = await getDoc(userRef);
+  if (!usersDoc.exists()) await setDoc(userRef, user);
+  return user;
+};
+
 export const onAuthChanged = (onChange: (user: any) => void) => {
   return onAuthStateChanged(getAuth(firebaseApp), (user) => {
-    const data = normalizeUserToObj(user);
-    if (data) if (data.uid) updateUserData(data).then(onChange);
-    onChange(data);
+    const data = user ? normalizeUserToObj(user) : user;
+    if (data) {
+      if (data.uid) verifyUserDB(data).then(onChange);
+    } else onChange(data);
   });
 };

@@ -1,4 +1,5 @@
 import Auth from "@/Auth";
+import Develop from "@/Develop";
 import useUser from "@/hooks/useUser";
 import { lazy, Suspense } from "react";
 import { Route, Switch } from "react-router-dom";
@@ -35,6 +36,12 @@ export default function Routes() {
         <ProtectedRoute path="/enterprises" isAuth={user} exact>
           <Enterprises />
         </ProtectedRoute>
+
+        {process.env.NODE_ENV === "development" && (
+          <ProtectedRoute path="/develop" isAuth={user} exact>
+            <Develop />
+          </ProtectedRoute>
+        )}
 
         <Route path="*">
           <PageNotFound />

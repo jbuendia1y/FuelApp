@@ -7,6 +7,9 @@ import {
   Timestamp,
   addDoc,
   where,
+  doc,
+  updateDoc,
+  getDoc,
 } from "@firebase/firestore";
 import {
   computeKmPorGalon,
@@ -32,6 +35,11 @@ export const firestoreCollections = {
   Enterprise: function (enterpriseId: string) {
     return this.Enterprises + "/" + enterpriseId;
   },
+};
+
+export const updateUser = async (user: any) => {
+  const userRef = doc(db, firestoreCollections.User(user.uid));
+  return await updateDoc(userRef, user);
 };
 
 const fetchLastFormDoc = async (userId: string) => {
@@ -62,13 +70,18 @@ const computeFuelForm = async (formData: FuelPerformanceForm) => {
   const pagoPorKm = computePagoPorKm(kmRecorrido, pagoTotal);
   const kmPorGalon = computeKmPorGalon(kmRecorrido, formData.galones);
 
+  let createdAt = new Date();
+
+  if (process.env.NODE_ENV === "development" && (formData as any).createdAt)
+    createdAt = (formData as any).createdAt;
+
   const data: FuelPerformanceDoc = {
     ...formData,
     pagoTotal,
     kmRecorrido,
     kmPorGalon,
     pagoPorKm,
-    createdAt: Timestamp.fromDate(new Date()),
+    createdAt: Timestamp.fromDate(createdAt),
   };
 
   return data;
@@ -93,4 +106,13 @@ export const fetchHistoric = async (uid: string) => {
   );
   const docsQuery = query(fuelPerformance, where("userId", "==", uid));
   return await getDocs(docsQuery).then((res) => res.docs);
+};
+
+export const fetchEnterprises = async () => {
+  const enterprisesCollection = collection(
+    db,
+    firestoreCollections.Enterprises
+  );
+
+  return await getDocs(query(enterprisesCollection));
 };

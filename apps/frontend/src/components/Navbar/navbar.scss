@@ -57,6 +57,10 @@
       .nav__item {
         border-top: 1px solid rgba(0, 0, 0, 0.5);
 
+        .avatar {
+          padding: 10px;
+        }
+
         &:nth-child(1) {
           border-top: none;
         }
