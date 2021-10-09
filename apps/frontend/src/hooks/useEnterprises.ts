@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 
 export default function useEnterprises() {
   const [enterprises, setEnterprises] = useState<null | DocumentData[]>(null);
-
   useEffect(() => {
     fetchEnterprises().then((res) => {
       setEnterprises(res.docs);

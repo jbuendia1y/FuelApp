@@ -104,7 +104,11 @@ export const fetchHistoric = async (uid: string) => {
     db,
     firestoreCollections.UserFuelsPerformance(uid)
   );
-  const docsQuery = query(fuelPerformance, where("userId", "==", uid));
+  const docsQuery = query(
+    fuelPerformance,
+    where("userId", "==", uid),
+    orderBy("createdAt", "asc")
+  );
   return await getDocs(docsQuery).then((res) => res.docs);
 };
 

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./avatar.scss";
 
 export default function Avatar({
@@ -18,12 +19,12 @@ export default function Avatar({
         <span className="avatar__text-bold">{user.name}</span>
         <span className="avatar__text-lighter">{children}</span>
       </p>
-      <a
+      <Link
         className="avatar__link"
-        href={"/profile" + `${user.uid ? `/${user.uid}` : ""}`}
+        to={"/profile" + `${user.uid ? `/${user.uid}` : ""}`}
       >
         ver perfil
-      </a>
+      </Link>
     </div>
   );
 }
