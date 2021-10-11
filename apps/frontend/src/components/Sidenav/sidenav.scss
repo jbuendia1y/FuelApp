@@ -5,6 +5,7 @@
 
   transform: translateX(calc(-100% - 10px));
   position: fixed;
+  z-index: 10;
 
   background-color: var(--bg-primary);
   box-shadow: -2px -5px 10px #00000069;

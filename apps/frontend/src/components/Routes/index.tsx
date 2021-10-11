@@ -2,7 +2,7 @@ import Auth from "@/Auth";
 import Develop from "@/Develop";
 import useUser from "@/hooks/useUser";
 import { lazy, Suspense } from "react";
-import { Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Loading from "../Loading";
 import ProtectedRoute from "./protectedRoute";
 
@@ -25,7 +25,7 @@ export default function Routes() {
           <Compose />
         </ProtectedRoute>
 
-        <ProtectedRoute path="/historic" isAuth={user}>
+        <ProtectedRoute path="/historic" isAuth={user} exact>
           <Historic />
         </ProtectedRoute>
 
@@ -33,9 +33,9 @@ export default function Routes() {
           <Profile />
         </ProtectedRoute>
 
-        <ProtectedRoute path="/enterprises" isAuth={user} exact>
+        <BrowserRouter basename="/enterprises">
           <Enterprises />
-        </ProtectedRoute>
+        </BrowserRouter>
 
         {process.env.NODE_ENV === "development" && (
           <ProtectedRoute path="/develop" isAuth={user} exact>

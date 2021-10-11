@@ -120,3 +120,8 @@ export const fetchEnterprises = async () => {
 
   return await getDocs(query(enterprisesCollection));
 };
+
+export const fetchEnterprise = async (id: string) => {
+  const enterpriseReference = doc(db, firestoreCollections.Enterprise(id));
+  return getDoc(enterpriseReference);
+};
