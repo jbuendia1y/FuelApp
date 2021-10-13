@@ -1,6 +1,7 @@
 import Button from "@/components/Button";
 import ModalPortal from "@/components/ModalPortal";
 import { fetchEnterprise } from "@/firebase/firestore";
+import useRole from "@/hooks/useRole";
 import { DocumentData } from "@firebase/firestore";
 import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
@@ -9,6 +10,7 @@ export default function Enterprise() {
   const [enterprise, setEnterprise] = useState<DocumentData | null>(null);
   const [showModal, setShowModal] = useState(false);
   const { enterpriseId } = useParams<{ enterpriseId: string }>();
+  const role = useRole(enterpriseId);
 
   const history = useHistory();
 
@@ -39,7 +41,7 @@ export default function Enterprise() {
           <div>
             <img src={enterprise.logo} />
             <h2>{enterprise.name}</h2>
-            <Button onClick={handleClick}>Solicitar acceso</Button>
+            {!role && <Button onClick={handleClick}>Solicitar acceso</Button>}
           </div>
           {showModal && (
             <ModalPortal onClose={handleClose}>

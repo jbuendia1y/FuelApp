@@ -35,6 +35,55 @@ export const firestoreCollections = {
   Enterprise: function (enterpriseId: string) {
     return this.Enterprises + "/" + enterpriseId;
   },
+
+  // Enterprise Users By Role
+  EnterpriseUsers: function (enterpriseId: string) {
+    return this.Enterprise(enterpriseId) + "/users";
+  },
+
+  // RolesInEnterprises
+  UserOfEnterprise: function (enterpriseId: string, uid: string) {
+    return this.EnterpriseUsers(enterpriseId) + "/" + uid;
+  },
+};
+
+const getUser = async (uid: string) => {
+  const userDoc = await getDoc(doc(db, firestoreCollections.User(uid)));
+  if (!userDoc.exists()) return null;
+  return userDoc.data();
+};
+
+export const memberOfEnterprises = async (uid: string) => {
+  const user = await getUser(uid);
+  if (!user) return user;
+
+  const enterprisesData: any[] = [];
+  if (user.enterprises.length === 0) return null;
+
+  for (const enterpriseRef of user.enterprises) {
+    const enterpriseDoc = await getDoc(enterpriseRef);
+    enterprisesData.push({
+      id: enterpriseDoc.id,
+      ...(enterpriseDoc.data() as any),
+    });
+  }
+
+  return enterprisesData;
+};
+
+export const fetchEnterpriseUsersByRole = (
+  enterpriseId: string,
+  role: "admin" | "supervisor"
+) => {
+  const enterprisesCollection = collection(
+    db,
+    firestoreCollections.EnterpriseUsers(enterpriseId)
+  );
+  const enterpriceUsersQuery = query(
+    enterprisesCollection,
+    where("role", "==", role)
+  );
+  return getDocs(enterpriceUsersQuery);
 };
 
 export const updateUser = async (user: any) => {
@@ -59,6 +108,20 @@ const fetchLastFormDoc = async (userId: string) => {
     if (res.docs.length === 0) return null;
     return res.docs[0].data();
   });
+};
+
+export const getRoleOfUserInEnterprise = async (
+  uid: string,
+  enterpriseId: string
+) => {
+  const UserOfEnterpriseDocReference = doc(
+    db,
+    firestoreCollections.UserOfEnterprise(enterpriseId, uid)
+  );
+
+  const UserInEnterprise = await getDoc(UserOfEnterpriseDocReference);
+  if (!UserInEnterprise.exists()) return null;
+  else return UserInEnterprise.data().role;
 };
 
 const computeFuelForm = async (formData: FuelPerformanceForm) => {

@@ -33,9 +33,9 @@ export default function Routes() {
           <Profile />
         </ProtectedRoute>
 
-        <BrowserRouter basename="/enterprises">
+        <ProtectedRoute path={["/enterprises", "/enterprises/:enterpriseId"]}>
           <Enterprises />
-        </BrowserRouter>
+        </ProtectedRoute>
 
         {process.env.NODE_ENV === "development" && (
           <ProtectedRoute path="/develop" isAuth={user} exact>

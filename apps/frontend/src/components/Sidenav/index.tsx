@@ -1,3 +1,4 @@
+import useRole from "@/hooks/useRole";
 import useUser from "@/hooks/useUser";
 import { createRef } from "react";
 import Button from "../Button";
@@ -6,11 +7,14 @@ import Business from "../Icons/Business";
 import Checklist from "../Icons/Checklist";
 import List from "../Icons/List";
 import MenuIcon from "../Icons/MenuIcon";
+import AdminList from "./components/AdminList";
+import EnterprisesMemberList from "./components/EnterprisesMemberList";
 import SidenavItem from "./components/sidenavItem";
 import "./sidenav.scss";
 
 export default function Sidenav() {
   const user = useUser();
+  const role = useRole();
   const sidenavRef = createRef<HTMLDivElement>();
 
   return (
@@ -45,6 +49,8 @@ export default function Sidenav() {
                   Empresas
                 </SidenavItem>
               </ul>
+              {role && role === "admin" && <AdminList />}
+              <EnterprisesMemberList />
             </div>
           </div>
         </>

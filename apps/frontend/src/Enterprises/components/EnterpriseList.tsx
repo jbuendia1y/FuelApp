@@ -10,7 +10,7 @@ export default function EnterprisesList({ data }: { data: any[] }) {
         >
           <img src={item.logo} alt={item.name} />
           <h3>{item.name}</h3>
-          <Link className="enterprises__link" to={"/" + item.id}>
+          <Link className="enterprises__link" to={"/enterprises/" + item.id}>
             {item.name}
           </Link>
         </div>

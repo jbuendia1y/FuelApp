@@ -4,7 +4,7 @@ import FileDownload from "@/components/Icons/FileDownload";
 import useUser from "@/hooks/useUser";
 import { createRef } from "react";
 import Loading from "@/components/Loading";
-import dateTimeFormat from "@/helpers/dateTimeFormat";
+import dateTimeFormat from "@/utils/dateTimeFormat";
 
 export default function Hitoric() {
   const { fuelsPerformance, loading } = useFuelsPerformance();
