@@ -1,18 +1,15 @@
 import useEnterprisesMember from "@/hooks/useEnterprisesMember";
+import { getDataFromStorage } from "@/utils/handleStorage";
 import { createContext, useEffect, useState } from "react";
 
 const CurrentEnterpriseContext = createContext<{
-  data: null | any;
+  currentEnterprise: null | any;
   changeCurrentEnterprise: any;
-}>({ data: null, changeCurrentEnterprise: undefined });
+}>({ currentEnterprise: null, changeCurrentEnterprise: undefined });
 
 export function CurrentEnterpriseContextProvider(props: any) {
   const [enterprise, setEnterprise] = useState<any | null>(null);
   const enterprisesMember = useEnterprisesMember();
-
-  useEffect(() => {
-    console.log(enterprise);
-  }, [enterprisesMember, enterprise]);
 
   const changeCurrentEnterprise = (enterpriseId: string) => {
     if (enterpriseId === "NONE") return setEnterprise(null);
@@ -25,9 +22,17 @@ export function CurrentEnterpriseContextProvider(props: any) {
     setEnterprise(existEnterprise[0]);
   };
 
+  useEffect(() => {
+    if (!enterprisesMember) return;
+    if (enterprisesMember.length === 0) return;
+    if (enterprise) return;
+    const defaultEnterprise = getDataFromStorage("default-enterprise");
+    if (defaultEnterprise) changeCurrentEnterprise(defaultEnterprise);
+  }, [enterprisesMember, enterprise]);
+
   return (
     <CurrentEnterpriseContext.Provider
-      value={{ data: enterprise, changeCurrentEnterprise }}
+      value={{ currentEnterprise: enterprise, changeCurrentEnterprise }}
     >
       {props.children}
     </CurrentEnterpriseContext.Provider>

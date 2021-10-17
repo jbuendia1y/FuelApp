@@ -50,6 +50,7 @@ export default function Sidenav() {
                 </SidenavItem>
               </ul>
               {role && role === "admin" && <AdminList />}
+              {role && <SidenavItem href="/vehicles">Vehiculos</SidenavItem>}
               <EnterprisesMemberList />
             </div>
           </div>

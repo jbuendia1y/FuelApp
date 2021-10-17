@@ -5,7 +5,7 @@ import { FuelPerformanceForm } from "@/firebase/firestore/interfaces";
 import useUser from "@/hooks/useUser";
 import { FormEvent, useEffect, useState } from "react";
 import { FormField, FormInput, FormLabel } from "@/components/Form";
-import ModalPortal from "@/components/ModalPortal";
+import useCurrentEnterprise from "@/hooks/useCurrentEnterprise";
 
 export default function ComposeFPForm() {
   const [horometro, setHorometro] = useState<null | number>(null);
@@ -15,6 +15,7 @@ export default function ComposeFPForm() {
   const [onSubmit, setOnSubmit] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const user = useUser();
+  const { currentEnterprise } = useCurrentEnterprise();
 
   const [showModal, setShowModal] = useState(true);
 
@@ -30,16 +31,18 @@ export default function ComposeFPForm() {
 
     setButtonDisabled(true);
 
-    const data: FuelPerformanceForm = {
+    const FPF: FuelPerformanceForm = {
       horometro,
       galones,
       precioPorGalon,
       userId: user.uid,
     };
 
-    addRegister(data).then((res) => {
-      setOnSubmit(false);
-    });
+    addRegister(FPF, currentEnterprise ? currentEnterprise.id : undefined).then(
+      (res) => {
+        setOnSubmit(false);
+      }
+    );
     setTimeout(() => {
       setOnSubmit(false);
     }, 2000);

@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
 
-export default function Settings(props: SVGProps<SVGSVGElement>) {
+export default function SettingsIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" height={24} width={24} {...props}>
       <path d="M0 0h24v24H0V0z" fill="none" />

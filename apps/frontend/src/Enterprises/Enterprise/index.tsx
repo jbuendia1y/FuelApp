@@ -1,16 +1,18 @@
 import Button from "@/components/Button";
-import ModalPortal from "@/components/ModalPortal";
 import { fetchEnterprise } from "@/firebase/firestore";
 import useRole from "@/hooks/useRole";
+import useUser from "@/hooks/useUser";
 import { DocumentData } from "@firebase/firestore";
 import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
+import RequestModal from "./components/RequestModal";
 
 export default function Enterprise() {
   const [enterprise, setEnterprise] = useState<DocumentData | null>(null);
   const [showModal, setShowModal] = useState(false);
   const { enterpriseId } = useParams<{ enterpriseId: string }>();
-  const role = useRole(enterpriseId);
+  const role = useRole();
+  const user = useUser();
 
   const history = useHistory();
 
@@ -44,12 +46,12 @@ export default function Enterprise() {
             {!role && <Button onClick={handleClick}>Solicitar acceso</Button>}
           </div>
           {showModal && (
-            <ModalPortal onClose={handleClose}>
-              <p>
-                Está seguro de solicitar el acceso a la empresa{" "}
-                <span>{enterprise.name}</span>
-              </p>
-            </ModalPortal>
+            <RequestModal
+              user={user}
+              enterprise={enterprise}
+              enterpriseId={enterpriseId}
+              handleClose={handleClose}
+            />
           )}
         </>
       )}

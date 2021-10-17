@@ -8,17 +8,17 @@ const RoleContext = createContext<null | "admin" | "supervisor">(null);
 export function RoleContextProvider(props: any) {
   const [role, setRole] = useState<null | "admin" | "supervisor">(null);
   const user = useUser();
-  const { data } = useCurrentEnterprise();
+  const { currentEnterprise } = useCurrentEnterprise();
 
   useEffect(() => {
     if (!user) return;
-    if (!data) return;
-    getRoleOfUserInEnterprise(user.uid, data.id)
+    if (!currentEnterprise) return;
+    getRoleOfUserInEnterprise(user.uid, currentEnterprise.id)
       .then(setRole)
       .catch((err) => {
         setRole(null);
       });
-  }, [user, data]);
+  }, [user, currentEnterprise]);
 
   return (
     <RoleContext.Provider value={role}>{props.children}</RoleContext.Provider>

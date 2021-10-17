@@ -1,12 +1,16 @@
-import Auth from "@/Auth";
-import Develop from "@/Develop";
+import useRole from "@/hooks/useRole";
 import useUser from "@/hooks/useUser";
 import { lazy, Suspense } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import Loading from "../Loading";
 import ProtectedRoute from "./protectedRoute";
 
+const Auth = lazy(() => import("@/Auth"));
+const Develop = lazy(() => import("@/Develop"));
 const Compose = lazy(() => import("@/Compose"));
+const Admin = lazy(() => import("@/Admin"));
+const Vehicles = lazy(() => import("@/Vehicles"));
+const Settings = lazy(() => import("@/Settings"));
 const Historic = lazy(() => import("@/Historic"));
 const Profile = lazy(() => import("@/Profile"));
 const Enterprises = lazy(() => import("@/Enterprises"));
@@ -14,6 +18,8 @@ const PageNotFound = lazy(() => import("@/PageNotFound"));
 
 export default function Routes() {
   const user = useUser();
+  const role = useRole();
+
   return (
     <Suspense fallback={<Loading />}>
       <Switch>
@@ -41,6 +47,24 @@ export default function Routes() {
           <ProtectedRoute path="/develop" isAuth={user} exact>
             <Develop />
           </ProtectedRoute>
+        )}
+
+        <ProtectedRoute path="/settings" isAuth={user} exact>
+          <Settings />
+        </ProtectedRoute>
+
+        <ProtectedRoute path="/vehicles" isAuth={user} exact>
+          <Vehicles />
+        </ProtectedRoute>
+
+        {role && (
+          <>
+            {role === "admin" && (
+              <ProtectedRoute path={["/supervisores"]} isAuth={user} exact>
+                <Admin />
+              </ProtectedRoute>
+            )}
+          </>
         )}
 
         <Route path="*">

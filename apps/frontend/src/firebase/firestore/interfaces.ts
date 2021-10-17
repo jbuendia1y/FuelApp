@@ -7,6 +7,7 @@ export interface FuelPerformanceForm {
   precioPorGalon: number;
   // Datos del usuario
   userId: string;
+  user?: any;
 }
 
 export interface FuelPerformanceDoc extends FuelPerformanceForm {

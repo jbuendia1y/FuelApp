@@ -1,20 +1,9 @@
-import ShowMore from "../showMore.svg";
-import useCurrentEnterprise from "@/hooks/useCurrentEnterprise";
+import Workspaces from "@/components/Workspaces";
 import useMemberOfEnterprises from "@/hooks/useEnterprisesMember";
-import { ChangeEvent } from "react";
 import SidenavItem from "./sidenavItem";
 
 export default function EnterprisesMemberList() {
   const enterprisesMember = useMemberOfEnterprises();
-  const { data, changeCurrentEnterprise } = useCurrentEnterprise();
-
-  const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    try {
-      changeCurrentEnterprise(e.target.value);
-    } catch (err: any) {
-      console.log(err.message);
-    }
-  };
 
   return (
     <>
@@ -35,28 +24,12 @@ export default function EnterprisesMemberList() {
             })}
           </ul>
           <p>Espacio de Trabajo</p>
-          <div className="sidenav__link">
-            {data && <img src={data.logo} alt={data.name} />}
-            <select
-              name="enterprise"
-              id="enterprise-workspace"
-              onChange={handleChange}
-              defaultValue={"NONE"}
-              style={{ backgroundImage: `url(${ShowMore})` }}
-            >
-              <option value={"NONE"}>Mi perfil</option>
-              {enterprisesMember.map((item) => {
-                return (
-                  <option
-                    key={"enterprise-workspace-option-" + item.id}
-                    value={item.id}
-                  >
-                    {item.name}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
+          <Workspaces
+            className="sidenav__link"
+            onChangeCE={(e) => {
+              console.log(e);
+            }}
+          />
         </>
       )}
     </>

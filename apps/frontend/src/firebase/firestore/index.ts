@@ -10,6 +10,7 @@ import {
   doc,
   updateDoc,
   getDoc,
+  setDoc,
 } from "@firebase/firestore";
 import {
   computeKmPorGalon,
@@ -39,6 +40,21 @@ export const firestoreCollections = {
   // Enterprise Users By Role
   EnterpriseUsers: function (enterpriseId: string) {
     return this.Enterprise(enterpriseId) + "/users";
+  },
+
+  // Enterprise Fuel Forms
+  EnterpriseForms: function (enterpriseId: string) {
+    return this.Enterprise(enterpriseId) + "/fuels-performance";
+  },
+
+  // Enterprise Vehicles
+  EnterpriseVehicles: function (enterpriseId: string) {
+    return this.Enterprise(enterpriseId) + "/vehicles";
+  },
+
+  // Requests for the Company
+  EnterpriseRequests: function (enterpriseId: string) {
+    return this.Enterprise(enterpriseId) + "/requests";
   },
 
   // RolesInEnterprises
@@ -81,8 +97,10 @@ export const fetchEnterpriseUsersByRole = (
   );
   const enterpriceUsersQuery = query(
     enterprisesCollection,
-    where("role", "==", role)
+    where("role", "==", role),
+    limit(15)
   );
+  console.log(enterprisesCollection);
   return getDocs(enterpriceUsersQuery);
 };
 
@@ -91,10 +109,12 @@ export const updateUser = async (user: any) => {
   return await updateDoc(userRef, user);
 };
 
-const fetchLastFormDoc = async (userId: string) => {
+const fetchLastFormDoc = async (userId: string, enterpriseId?: string) => {
   const fuelPerformanceReference = collection(
     db,
-    firestoreCollections.UserFuelsPerformance(userId)
+    enterpriseId
+      ? firestoreCollections.EnterpriseForms(enterpriseId)
+      : firestoreCollections.UserFuelsPerformance(userId)
   );
   const lastFormQuery = query(
     fuelPerformanceReference,
@@ -124,8 +144,11 @@ export const getRoleOfUserInEnterprise = async (
   else return UserInEnterprise.data().role;
 };
 
-const computeFuelForm = async (formData: FuelPerformanceForm) => {
-  const lastFormDoc = await fetchLastFormDoc(formData.userId);
+const computeFuelForm = async (
+  formData: FuelPerformanceForm,
+  enterprise?: string
+) => {
+  const lastFormDoc = await fetchLastFormDoc(formData.userId, enterprise);
 
   // Datos dinámicos por las formulas
   const kmRecorrido = computeKmRecorrido(formData, lastFormDoc);
@@ -150,12 +173,20 @@ const computeFuelForm = async (formData: FuelPerformanceForm) => {
   return data;
 };
 
-export const addRegister = async (data: FuelPerformanceForm) => {
+export const addRegister = async (
+  data: FuelPerformanceForm,
+  enterpriseId?: string
+) => {
   const fuelPerformance = collection(
     db,
-    firestoreCollections.UserFuelsPerformance(data.userId)
+    enterpriseId
+      ? firestoreCollections.EnterpriseForms(enterpriseId)
+      : firestoreCollections.UserFuelsPerformance(data.userId)
   );
-  return await addDoc(fuelPerformance, await computeFuelForm(data));
+  return await addDoc(
+    fuelPerformance,
+    await computeFuelForm(data, enterpriseId)
+  );
 };
 
 export const fetchRegister = (id: string) => {
@@ -187,4 +218,58 @@ export const fetchEnterprises = async () => {
 export const fetchEnterprise = async (id: string) => {
   const enterpriseReference = doc(db, firestoreCollections.Enterprise(id));
   return getDoc(enterpriseReference);
+};
+
+export const addSupervisor = async (enterpriseId: string, uid: string) => {
+  const EnterpriseUsersDocRef = doc(
+    db,
+    firestoreCollections.UserOfEnterprise(enterpriseId, uid)
+  );
+
+  return setDoc(EnterpriseUsersDocRef, { uid, role: "supervisor" });
+};
+
+export const fetchVehicles = (enterpriseId: string) => {
+  const EnterpriseVehiclesCollRef = collection(
+    db,
+    firestoreCollections.EnterpriseVehicles(enterpriseId)
+  );
+
+  const EnterpriseVehiclesCollRefQuery = query(
+    EnterpriseVehiclesCollRef,
+    limit(15)
+  );
+
+  return getDocs(EnterpriseVehiclesCollRefQuery);
+};
+
+export const addVehicle = (enterpriseId: string, data: any) => {
+  console.log(enterpriseId);
+  const EnterpriseVehiclesCollRef = collection(
+    db,
+    firestoreCollections.EnterpriseVehicles(enterpriseId)
+  );
+
+  return addDoc(EnterpriseVehiclesCollRef, data);
+};
+
+export const fetchRequests = (enterpriseId: string) => {
+  const EnterpriseRequestsCollRef = collection(
+    db,
+    firestoreCollections.EnterpriseRequests(enterpriseId)
+  );
+  const EnterpriseRequestsQuery = query(EnterpriseRequestsCollRef, limit(15));
+  return getDocs(EnterpriseRequestsQuery);
+};
+
+export const requestAccess = (enterpriseId: string, data: any) => {
+  const EnterpriseRequestDocRef = doc(
+    db,
+    firestoreCollections.EnterpriseRequests(enterpriseId) + "/" + data.uid
+  );
+
+  return setDoc(EnterpriseRequestDocRef, {
+    user: data,
+    createdAt: Timestamp.fromDate(new Date()),
+  });
 };

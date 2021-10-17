@@ -1,7 +1,7 @@
 import Avatar from "@/components/Avatar";
 import Button from "@/components/Button";
 import LogoutIcon from "@/components/Icons/LogoutIcon";
-import Settings from "@/components/Icons/Settings";
+import SettingsIcon from "@/components/Icons/SettingsIcon";
 import { userLogout } from "@/firebase/client";
 import { useHistory } from "react-router";
 import NavItem from "./NavItem";
@@ -15,7 +15,7 @@ export default function WithAuth(user: any) {
         <Avatar user={user}>Ver perfil</Avatar>
       </NavItem>
       <NavItem href="/settings">
-        <Settings /> Configuración
+        <SettingsIcon /> Configuración
       </NavItem>
       <NavItem>
         <Button
