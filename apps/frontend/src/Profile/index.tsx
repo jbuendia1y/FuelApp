@@ -3,7 +3,7 @@ import useUser from "@/hooks/useUser";
 import Email from "@/components/Icons/Email";
 import { Link } from "react-router-dom";
 import Phone from "@/components/Icons/Phone";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import EditIcon from "@/components/Icons/EditIcon";
 import ModalPortal from "@/components/ModalPortal";
 import EditProfile from "./components/EditProfile";
@@ -11,10 +11,6 @@ import EditProfile from "./components/EditProfile";
 export default function Profile() {
   const user = useUser();
   const [onEdit, setOnEdit] = useState(false);
-
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
 
   const handleOnClose = () => {
     setOnEdit(false);

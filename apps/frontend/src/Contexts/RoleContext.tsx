@@ -3,10 +3,12 @@ import useCurrentEnterprise from "@/hooks/useCurrentEnterprise";
 import useUser from "@/hooks/useUser";
 import { createContext, useEffect, useState } from "react";
 
-const RoleContext = createContext<null | "admin" | "supervisor">(null);
+type RoleStates = null | "admin" | "supervisor" | "chofer";
+
+const RoleContext = createContext<RoleStates>(null);
 
 export function RoleContextProvider(props: any) {
-  const [role, setRole] = useState<null | "admin" | "supervisor">(null);
+  const [role, setRole] = useState<RoleStates>(null);
   const user = useUser();
   const { currentEnterprise } = useCurrentEnterprise();
 

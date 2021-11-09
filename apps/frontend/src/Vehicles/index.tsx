@@ -3,14 +3,14 @@ import AddVehicle from "./components/addVehicle";
 import VehiclesList from "./components/vehiclesList";
 
 export default function Vehicles() {
-  const userRole = useRole();
+  const role = useRole();
 
   return (
     <div className="vehicles">
       <div className="vehicles-box">
-        {userRole && (
+        {role && (
           <>
-            <AddVehicle />
+            {role !== "chofer" && <AddVehicle />}
             <VehiclesList />
           </>
         )}

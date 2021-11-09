@@ -15,6 +15,7 @@ const Historic = lazy(() => import("@/Historic"));
 const Profile = lazy(() => import("@/Profile"));
 const Enterprises = lazy(() => import("@/Enterprises"));
 const PageNotFound = lazy(() => import("@/PageNotFound"));
+const Requests = lazy(() => import("@/Requests"));
 
 export default function Routes() {
   const user = useUser();
@@ -57,15 +58,19 @@ export default function Routes() {
           <Vehicles />
         </ProtectedRoute>
 
-        {role && (
-          <>
-            {role === "admin" && (
-              <ProtectedRoute path={["/supervisores"]} isAuth={user} exact>
-                <Admin />
-              </ProtectedRoute>
-            )}
-          </>
-        )}
+        <ProtectedRoute path={["/requests/access"]} isAuth={user} exact>
+          <Requests />
+        </ProtectedRoute>
+
+        <ProtectedRoute
+          path={["/supervisores", "/inject/forms"]}
+          isAuth={user}
+          currentRole={role}
+          role={"admin"}
+          exact
+        >
+          <Admin />
+        </ProtectedRoute>
 
         <Route path="*">
           <PageNotFound />

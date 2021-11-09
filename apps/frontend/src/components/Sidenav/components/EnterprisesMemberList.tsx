@@ -23,7 +23,6 @@ export default function EnterprisesMemberList() {
               );
             })}
           </ul>
-          <p>Espacio de Trabajo</p>
           <Workspaces
             className="sidenav__link"
             onChangeCE={(e) => {

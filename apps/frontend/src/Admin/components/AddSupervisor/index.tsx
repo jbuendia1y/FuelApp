@@ -14,7 +14,7 @@ export default function AddSupervisor() {
     if (userId.length === 0) return;
     addSupervisor(currentEnterprise.id, userId)
       .then((res) => {
-        console.log("Supervisor añadido");
+        alert("Supervisor añadido");
       })
       .catch((err) => console.log(err.message));
   };

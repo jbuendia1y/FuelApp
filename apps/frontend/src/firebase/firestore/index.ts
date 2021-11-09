@@ -11,6 +11,7 @@ import {
   updateDoc,
   getDoc,
   setDoc,
+  deleteDoc,
 } from "@firebase/firestore";
 import {
   computeKmPorGalon,
@@ -42,19 +43,25 @@ export const firestoreCollections = {
     return this.Enterprise(enterpriseId) + "/users";
   },
 
-  // Enterprise Fuel Forms
-  EnterpriseForms: function (enterpriseId: string) {
-    return this.Enterprise(enterpriseId) + "/fuels-performance";
-  },
-
   // Enterprise Vehicles
   EnterpriseVehicles: function (enterpriseId: string) {
     return this.Enterprise(enterpriseId) + "/vehicles";
   },
 
+  EnterpriseVehicle: function (enterpriseId: string, placa: string) {
+    return this.EnterpriseVehicles(enterpriseId) + "/" + placa;
+  },
+
   // Requests for the Company
   EnterpriseRequests: function (enterpriseId: string) {
     return this.Enterprise(enterpriseId) + "/requests";
+  },
+
+  FuelPerformancesForEnterpriseVehicle: function (
+    enterpriseId: string,
+    vehicle: string
+  ) {
+    return this.EnterpriseVehicle(enterpriseId, vehicle) + "/fuel-performance";
   },
 
   // RolesInEnterprises
@@ -89,7 +96,7 @@ export const memberOfEnterprises = async (uid: string) => {
 
 export const fetchEnterpriseUsersByRole = (
   enterpriseId: string,
-  role: "admin" | "supervisor"
+  role: "admin" | "supervisor" | "chofer"
 ) => {
   const enterprisesCollection = collection(
     db,
@@ -109,11 +116,20 @@ export const updateUser = async (user: any) => {
   return await updateDoc(userRef, user);
 };
 
-const fetchLastFormDoc = async (userId: string, enterpriseId?: string) => {
+const fetchLastFormDoc = async (
+  userId: string,
+  enterprise?: {
+    id: string;
+    vehicle: string;
+  }
+) => {
   const fuelPerformanceReference = collection(
     db,
-    enterpriseId
-      ? firestoreCollections.EnterpriseForms(enterpriseId)
+    enterprise
+      ? firestoreCollections.FuelPerformancesForEnterpriseVehicle(
+          enterprise.id,
+          enterprise.vehicle
+        )
       : firestoreCollections.UserFuelsPerformance(userId)
   );
   const lastFormQuery = query(
@@ -146,7 +162,10 @@ export const getRoleOfUserInEnterprise = async (
 
 const computeFuelForm = async (
   formData: FuelPerformanceForm,
-  enterprise?: string
+  enterprise?: {
+    id: string;
+    vehicle: string;
+  }
 ) => {
   const lastFormDoc = await fetchLastFormDoc(formData.userId, enterprise);
 
@@ -175,18 +194,21 @@ const computeFuelForm = async (
 
 export const addRegister = async (
   data: FuelPerformanceForm,
-  enterpriseId?: string
+  enterprise?: {
+    id: string;
+    vehicle: string;
+  }
 ) => {
   const fuelPerformance = collection(
     db,
-    enterpriseId
-      ? firestoreCollections.EnterpriseForms(enterpriseId)
+    enterprise
+      ? firestoreCollections.FuelPerformancesForEnterpriseVehicle(
+          enterprise.id,
+          enterprise.vehicle
+        )
       : firestoreCollections.UserFuelsPerformance(data.userId)
   );
-  return await addDoc(
-    fuelPerformance,
-    await computeFuelForm(data, enterpriseId)
-  );
+  return await addDoc(fuelPerformance, await computeFuelForm(data, enterprise));
 };
 
 export const fetchRegister = (id: string) => {
@@ -229,7 +251,7 @@ export const addSupervisor = async (enterpriseId: string, uid: string) => {
   return setDoc(EnterpriseUsersDocRef, { uid, role: "supervisor" });
 };
 
-export const fetchVehicles = (enterpriseId: string) => {
+export const fetchVehicles = async (enterpriseId: string) => {
   const EnterpriseVehiclesCollRef = collection(
     db,
     firestoreCollections.EnterpriseVehicles(enterpriseId)
@@ -240,11 +262,10 @@ export const fetchVehicles = (enterpriseId: string) => {
     limit(15)
   );
 
-  return getDocs(EnterpriseVehiclesCollRefQuery);
+  return await getDocs(EnterpriseVehiclesCollRefQuery);
 };
 
 export const addVehicle = (enterpriseId: string, data: any) => {
-  console.log(enterpriseId);
   const EnterpriseVehiclesCollRef = collection(
     db,
     firestoreCollections.EnterpriseVehicles(enterpriseId)
@@ -262,14 +283,80 @@ export const fetchRequests = (enterpriseId: string) => {
   return getDocs(EnterpriseRequestsQuery);
 };
 
-export const requestAccess = (enterpriseId: string, data: any) => {
+export const requestAccess = async (enterpriseId: string, data: any) => {
   const EnterpriseRequestDocRef = doc(
     db,
     firestoreCollections.EnterpriseRequests(enterpriseId) + "/" + data.uid
+  );
+
+  const existRequest = await getDoc(EnterpriseRequestDocRef);
+  if (existRequest.exists())
+    throw new Error(
+      "Usted ya solicitó el acceso.\n Espere a que los supervisores de la empresa revisen su solicitud"
+    );
+
+  await setDoc(
+    doc(db, firestoreCollections.User(data.uid)),
+    {
+      enterprises: [doc(db, firestoreCollections.Enterprise(enterpriseId))],
+    },
+    { merge: true }
   );
 
   return setDoc(EnterpriseRequestDocRef, {
     user: data,
     createdAt: Timestamp.fromDate(new Date()),
   });
+};
+
+export const deniedAccessRequest = (uid: string, enterpriseId: string) => {
+  const accessRequestDocRef = doc(
+    db,
+    firestoreCollections.EnterpriseRequests(enterpriseId) + "/" + uid
+  );
+  return deleteDoc(accessRequestDocRef);
+};
+
+export const acceptAccessRequest = async (
+  uid: string,
+  enterpriseId: string
+) => {
+  await deniedAccessRequest(uid, enterpriseId);
+
+  const enterpriseUserDocRef = doc(
+    db,
+    firestoreCollections.EnterpriseUsers(enterpriseId) + "/" + uid
+  );
+
+  return await setDoc(enterpriseUserDocRef, { uid, role: "chofer" });
+};
+
+export const fetchUserEnterpriseVehicle = async (
+  uid: string,
+  enterpriseId: string
+) => {
+  const userEnterpriseDocRef = doc(
+    db,
+    firestoreCollections.UserOfEnterprise(enterpriseId, uid)
+  );
+  return (await getDoc(userEnterpriseDocRef)).get("vehicle");
+};
+
+export const saveCurrentVehicle = async (
+  uid: string,
+  enterpriseId: string,
+  vehicle: string
+) => {
+  const userEnterpriseDocRef = doc(
+    db,
+    firestoreCollections.UserOfEnterprise(enterpriseId, uid)
+  );
+
+  setDoc(
+    userEnterpriseDocRef,
+    {
+      vehicle,
+    },
+    { merge: true }
+  );
 };

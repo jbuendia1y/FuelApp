@@ -1,4 +1,5 @@
 import { Route, Switch } from "react-router";
+import Inject from "./pages/Inject";
 import Supervisores from "./pages/Supervisores";
 
 export default function Admin() {
@@ -8,6 +9,9 @@ export default function Admin() {
         <Switch>
           <Route path="/supervisores">
             <Supervisores />
+          </Route>
+          <Route path="/inject/forms">
+            <Inject />
           </Route>
         </Switch>
       </div>

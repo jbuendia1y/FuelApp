@@ -1,24 +1,8 @@
-import { fetchVehicles } from "@/firebase/firestore";
-import { useEffect, useState } from "react";
-import useCurrentEnterprise from "./useCurrentEnterprise";
+import EnterpriseVehiclesContext from "@/Contexts/EnterpriseVehiclesContext";
+import { useContext } from "react";
 
 export default function useVehicles() {
-  const { currentEnterprise } = useCurrentEnterprise();
-  const [vehicles, setVehicles] = useState<null | any[]>(null);
-
-  useEffect(() => {
-    if (!currentEnterprise) return;
-    fetchVehicles(currentEnterprise.id).then((res) => {
-      setVehicles(
-        res.docs.map((item) => {
-          return {
-            id: item.id,
-            ...item.data(),
-          };
-        })
-      );
-    });
-  }, [currentEnterprise]);
+  const vehicles = useContext(EnterpriseVehiclesContext);
 
   return { vehicles };
 }

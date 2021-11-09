@@ -6,6 +6,7 @@ import useUser from "@/hooks/useUser";
 import { FormEvent, useEffect, useState } from "react";
 import { FormField, FormInput, FormLabel } from "@/components/Form";
 import useCurrentEnterprise from "@/hooks/useCurrentEnterprise";
+import FuelPerformance from "@/firebase/firestore/fuelPerformanceForm";
 
 export default function ComposeFPForm() {
   const [horometro, setHorometro] = useState<null | number>(null);
@@ -15,9 +16,8 @@ export default function ComposeFPForm() {
   const [onSubmit, setOnSubmit] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const user = useUser();
-  const { currentEnterprise } = useCurrentEnterprise();
-
-  const [showModal, setShowModal] = useState(true);
+  const { enterprise, currentEnterpriseVehicle, currentEnterprise } =
+    useCurrentEnterprise();
 
   const computeValue = (value: string) =>
     parseFloat(value.replaceAll(",", "."));
@@ -38,14 +38,22 @@ export default function ComposeFPForm() {
       userId: user.uid,
     };
 
-    addRegister(FPF, currentEnterprise ? currentEnterprise.id : undefined).then(
-      (res) => {
+    if (!currentEnterpriseVehicle) {
+      setTimeout(() => {
         setOnSubmit(false);
-      }
-    );
+        setButtonDisabled(false);
+      }, 2000);
+      return alert(
+        `Detectamos que seleccionó un espacio de trabajo la empresa ${currentEnterprise.name},\npero usted no eligió un vehículo de esta, por favor seleccione un vehículo para guardar el formulario en la empresa .\nMuchas gracias.`
+      );
+    }
+    new FuelPerformance(FPF, enterprise).addRegister().then((res) => {
+      setOnSubmit(false);
+    });
+
     setTimeout(() => {
       setOnSubmit(false);
-    }, 2000);
+    }, 1500);
   }, [onSubmit]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {

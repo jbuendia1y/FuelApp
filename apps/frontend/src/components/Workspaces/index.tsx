@@ -21,31 +21,41 @@ export default function Workspaces(props: {
 
   return (
     <>
-      {enterprisesMember && (
-        <div className={props.className}>
-          {currentEnterprise && (
-            <img src={currentEnterprise.logo} alt={currentEnterprise.name} />
-          )}
-          <select
-            name="enterprise"
-            id="enterprise-workspace"
-            onChange={handleChange}
-            defaultValue={currentEnterprise ? currentEnterprise.id : "NONE"}
-            style={{ backgroundImage: `url(${ShowMore})` }}
-          >
-            <option value={"NONE"}>Mi perfil</option>
-            {enterprisesMember.map((item) => {
-              return (
-                <option
-                  key={"enterprise-workspace-option-" + item.id}
-                  value={item.id}
+      {enterprisesMember && currentEnterprise && (
+        <>
+          <p>Espacio de Trabajo</p>
+          <div className={props.className}>
+            {
+              <>
+                <img
+                  src={currentEnterprise.logo}
+                  alt={currentEnterprise.name}
+                />
+                <select
+                  name="enterprise"
+                  id="enterprise-workspace"
+                  onChange={handleChange}
+                  defaultValue={
+                    currentEnterprise ? currentEnterprise.id : "NONE"
+                  }
+                  style={{ backgroundImage: `url(${ShowMore})` }}
                 >
-                  {item.name}
-                </option>
-              );
-            })}
-          </select>
-        </div>
+                  <option value={"NONE"}>Mi perfil</option>
+                  {enterprisesMember.map((item) => {
+                    return (
+                      <option
+                        key={"enterprise-workspace-option-" + item.id}
+                        value={item.id}
+                      >
+                        {item.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </>
+            }
+          </div>
+        </>
       )}
     </>
   );

@@ -18,7 +18,17 @@ export default function RequestModal({
 
   useEffect(() => {
     if (!onRequest) return;
-    requestAccess(enterpriseId, user);
+    requestAccess(enterpriseId, user)
+      .then(() => {
+        setOnRequest(false);
+        alert(
+          "Su solicitud ha sido enviada a los supervisores de la empresa.\n Este proceso puede tomar un tiempo así que puede cerrar la app."
+        );
+      })
+      .catch((err) => {
+        setOnRequest(false);
+        alert(err.message);
+      });
   }, [onRequest]);
 
   return (
