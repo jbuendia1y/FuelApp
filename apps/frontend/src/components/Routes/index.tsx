@@ -1,19 +1,26 @@
-import Auth from "@/Auth";
-import Develop from "@/Develop";
+import useRole from "@/hooks/useRole";
 import useUser from "@/hooks/useUser";
 import { lazy, Suspense } from "react";
 import { Route, Switch } from "react-router-dom";
 import Loading from "../Loading";
 import ProtectedRoute from "./protectedRoute";
 
+const Auth = lazy(() => import("@/Auth"));
+const Develop = lazy(() => import("@/Develop"));
 const Compose = lazy(() => import("@/Compose"));
+const Admin = lazy(() => import("@/Admin"));
+const Vehicles = lazy(() => import("@/Vehicles"));
+const Settings = lazy(() => import("@/Settings"));
 const Historic = lazy(() => import("@/Historic"));
 const Profile = lazy(() => import("@/Profile"));
 const Enterprises = lazy(() => import("@/Enterprises"));
 const PageNotFound = lazy(() => import("@/PageNotFound"));
+const Requests = lazy(() => import("@/Requests"));
 
 export default function Routes() {
   const user = useUser();
+  const role = useRole();
+
   return (
     <Suspense fallback={<Loading />}>
       <Switch>
@@ -25,7 +32,7 @@ export default function Routes() {
           <Compose />
         </ProtectedRoute>
 
-        <ProtectedRoute path="/historic" isAuth={user}>
+        <ProtectedRoute path="/historic" isAuth={user} exact>
           <Historic />
         </ProtectedRoute>
 
@@ -33,7 +40,7 @@ export default function Routes() {
           <Profile />
         </ProtectedRoute>
 
-        <ProtectedRoute path="/enterprises" isAuth={user} exact>
+        <ProtectedRoute path={["/enterprises", "/enterprises/:enterpriseId"]}>
           <Enterprises />
         </ProtectedRoute>
 
@@ -42,6 +49,28 @@ export default function Routes() {
             <Develop />
           </ProtectedRoute>
         )}
+
+        <ProtectedRoute path="/settings" isAuth={user} exact>
+          <Settings />
+        </ProtectedRoute>
+
+        <ProtectedRoute path="/vehicles" isAuth={user} exact>
+          <Vehicles />
+        </ProtectedRoute>
+
+        <ProtectedRoute path={["/requests/access"]} isAuth={user} exact>
+          <Requests />
+        </ProtectedRoute>
+
+        <ProtectedRoute
+          path={["/supervisores", "/inject/forms"]}
+          isAuth={user}
+          currentRole={role}
+          role={"admin"}
+          exact
+        >
+          <Admin />
+        </ProtectedRoute>
 
         <Route path="*">
           <PageNotFound />

@@ -1,10 +1,12 @@
 .sidenav {
   width: 25%;
+  height: 100vh;
   max-width: 220px;
   min-width: 200px;
 
   transform: translateX(calc(-100% - 10px));
   position: fixed;
+  z-index: 10;
 
   background-color: var(--bg-primary);
   box-shadow: -2px -5px 10px #00000069;
@@ -20,6 +22,7 @@
   &-box {
     position: sticky;
     top: 60px;
+    height: 100%;
   }
 
   &__list {
@@ -37,8 +40,19 @@
 
     color: inherit;
     width: 100%;
+    height: 48px;
     background-color: var(--bg-primary);
     fill: var(--text-color);
+
+    cursor: pointer;
+
+    svg,
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      display: inline-block;
+      margin-right: 5px;
+    }
 
     &:hover {
       transition: filter 0.25s;
@@ -62,6 +76,19 @@
       margin-right: 0;
     }
   }
+}
+
+#enterprise-workspace {
+  background: none;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  width: 100%;
+
+  background-repeat: no-repeat;
+  background-position-x: right;
+  background-position-y: center;
 }
 
 @media screen and (min-width: 1000px) {

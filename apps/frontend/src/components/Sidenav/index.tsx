@@ -1,16 +1,22 @@
+import useRole from "@/hooks/useRole";
 import useUser from "@/hooks/useUser";
 import { createRef } from "react";
 import Button from "../Button";
 import Assessment from "../Icons/Assessment";
 import Business from "../Icons/Business";
+import CarIcon from "../Icons/CarIcon";
 import Checklist from "../Icons/Checklist";
+import KeyIcon from "../Icons/KeyIcon";
 import List from "../Icons/List";
 import MenuIcon from "../Icons/MenuIcon";
+import AdminList from "./components/AdminList";
+import EnterprisesMemberList from "./components/EnterprisesMemberList";
 import SidenavItem from "./components/sidenavItem";
 import "./sidenav.scss";
 
 export default function Sidenav() {
   const user = useUser();
+  const role = useRole();
   const sidenavRef = createRef<HTMLDivElement>();
 
   return (
@@ -45,6 +51,22 @@ export default function Sidenav() {
                   Empresas
                 </SidenavItem>
               </ul>
+              {role && (
+                <ul className="sidenav__list">
+                  <SidenavItem href="/vehicles">
+                    <CarIcon /> Vehiculos
+                  </SidenavItem>
+                </ul>
+              )}
+              {role && role === "admin" && <AdminList />}
+              {role && (role === "admin" || role === "supervisor") && (
+                <ul className="sidenav__list">
+                  <SidenavItem href="/requests/access">
+                    <KeyIcon /> Solicitudes
+                  </SidenavItem>
+                </ul>
+              )}
+              <EnterprisesMemberList />
             </div>
           </div>
         </>

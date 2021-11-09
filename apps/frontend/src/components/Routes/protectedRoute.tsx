@@ -5,11 +5,13 @@ export default function ProtectedRoute({
   children,
   path,
   isAuth,
+  currentRole,
+  role,
   ...rest
 }: ProtectedRouteProps) {
   return (
     <Route path={path} {...rest}>
-      {isAuth === null && <Redirect to="/login" />}
+      {isAuth === null && currentRole !== role && <Redirect to="/login" />}
       {children}
     </Route>
   );

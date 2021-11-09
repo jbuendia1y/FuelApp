@@ -9,7 +9,9 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npm run dev --workspace=frontend"
+    "dev": "npm run dev --workspace=frontend",
+    "build:frontend": "npm run build --workspace=frontend",
+    "build:backend": "npm run build --workspace=backend"
   },
   "keywords": [
     "fuel",
@@ -17,7 +19,7 @@
   ],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "xlsx": "^0.17.2"
+  "devDependencies": {
+    "prettier": "^2.4.1"
   }
 }
