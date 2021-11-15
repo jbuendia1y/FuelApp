@@ -1,0 +1,20 @@
+#addVehicle {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  max-width: 350px;
+
+  .form {
+    &__field {
+    }
+  }
+}
+
+.addVehicle {
+  &__btn {
+    display: inline-block;
+    width: 100px;
+    text-align: center;
+  }
+}

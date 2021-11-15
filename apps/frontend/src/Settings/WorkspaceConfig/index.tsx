@@ -14,7 +14,7 @@ export default function WorkspaceConfig() {
 
   return (
     <section>
-      <h3>Espacios de trabajo</h3>
+      <h3 id="workspaces">Espacios de trabajo</h3>
       <p>
         Los espacios de trabajo son las empresas a las cuales usted tiene acceso
         .

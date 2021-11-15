@@ -3,6 +3,7 @@ import ShowMore from "@/components/Icons/showMore.svg";
 import useCurrentEnterprise from "@/hooks/useCurrentEnterprise";
 import useEnterprisesMember from "@/hooks/useEnterprisesMember";
 import { ChangeEvent } from "react";
+import { Link } from "react-router-dom";
 
 export default function Workspaces(props: {
   className?: string;
@@ -21,7 +22,7 @@ export default function Workspaces(props: {
 
   return (
     <>
-      {enterprisesMember && currentEnterprise && (
+      {enterprisesMember && currentEnterprise ? (
         <>
           <p>Espacio de Trabajo</p>
           <div className={props.className}>
@@ -56,6 +57,13 @@ export default function Workspaces(props: {
             }
           </div>
         </>
+      ) : (
+        <div className={props.className}>
+          <p>
+            No se ha elegido un{` `}
+            <Link to="/settings#workspaces">espacio de trabajo</Link>
+          </p>
+        </div>
       )}
     </>
   );

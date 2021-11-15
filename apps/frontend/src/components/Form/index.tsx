@@ -47,7 +47,7 @@ export function FormLabel({
 }: LabelHTMLAttributes<HTMLLabelElement>) {
   return (
     <label
-      className={`form__label${className ? ` ${className}` : className}`}
+      className={`form__label${className ? ` ${className}` : ""}`}
       {...rest}
     >
       {children}

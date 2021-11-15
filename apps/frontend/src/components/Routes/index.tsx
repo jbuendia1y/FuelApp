@@ -1,7 +1,7 @@
 import useRole from "@/hooks/useRole";
 import useUser from "@/hooks/useUser";
 import { lazy, Suspense } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import Loading from "../Loading";
 import ProtectedRoute from "./protectedRoute";
 
@@ -24,6 +24,10 @@ export default function Routes() {
   return (
     <Suspense fallback={<Loading />}>
       <Switch>
+        <Route path="/" exact>
+          <Redirect to="/login"></Redirect>
+        </Route>
+
         <Route path={["/login", "/register"]} exact>
           <Auth />
         </Route>

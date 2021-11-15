@@ -3,12 +3,19 @@ import Button from "@/components/Button";
 import AuthButtons from "./AuthButtons";
 import Form, { FormField, FormInput, FormLabel } from "@/components/Form";
 
+import { useHistory } from "react-router-dom";
+
 export default function AuthLogin() {
+  const history = useHistory();
   return (
     <>
       <Form
         validate={(data: { email: string; password: string }) => {
-          loginWithEmailAndPassword(data).catch((err) => console.log(err.code));
+          loginWithEmailAndPassword(data)
+            .then((res) => {
+              history.push("/compose/fuel-form");
+            })
+            .catch((err) => console.log(err.code));
         }}
       >
         <FormField>
