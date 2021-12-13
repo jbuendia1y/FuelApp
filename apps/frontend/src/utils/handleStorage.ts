@@ -3,8 +3,9 @@ export function getDataFromStorage(key: string) {
 }
 
 export default function setOrDeleteFromStorage(key: string, value?: string) {
-  if (key.length === 0) return;
+  if (key.length === 0)
+    throw new Error("The function setOrDeleteFromStorage need a key");
 
-  if (!value) localStorage.removeItem(key);
-  else localStorage.setItem(key, value);
+  if (!!value === false) localStorage.removeItem(key);
+  else localStorage.setItem(key, value as string);
 }

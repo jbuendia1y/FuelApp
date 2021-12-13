@@ -1,26 +1,21 @@
+import useAuth from "@/Auth/hooks/useAuth";
 import Avatar from "@/components/Avatar";
 import Button from "@/components/Button";
 import LogoutIcon from "@/components/Icons/LogoutIcon";
-import SettingsIcon from "@/components/Icons/SettingsIcon";
-import { userLogout } from "@/firebase/client";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import NavItem from "./NavItem";
 
-export default function WithAuth(user: any) {
+export default function WithAuth() {
   const history = useHistory();
+  const { user, logout } = useAuth();
 
   return (
     <>
-      <NavItem>
-        <Avatar user={user}>Ver perfil</Avatar>
-      </NavItem>
-      <NavItem href="/settings">
-        <SettingsIcon /> Configuración
-      </NavItem>
+      <NavItem>{user && <Avatar user={user}>Ver perfil</Avatar>}</NavItem>
       <NavItem>
         <Button
           onClick={() => {
-            userLogout().then(() => {
+            logout().then(() => {
               history.push("/login");
             });
           }}

@@ -34,7 +34,7 @@ export function FormField({
   className,
 }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={`form__field${className ? ` ${className}` : ""}`}>
+    <div className={`form-field${className ? ` ${className}` : ""}`}>
       {children}
     </div>
   );
@@ -47,7 +47,7 @@ export function FormLabel({
 }: LabelHTMLAttributes<HTMLLabelElement>) {
   return (
     <label
-      className={`form__label${className ? ` ${className}` : ""}`}
+      className={`form-label${className ? ` ${className}` : ""}`}
       {...rest}
     >
       {children}
@@ -58,7 +58,7 @@ export function FormLabel({
 export function FormInput({ className, ...rest }: FormInputProps) {
   return (
     <input
-      className={`form__input${className ? ` ${className}` : ""}`}
+      className={`form-input${className ? ` ${className}` : ""}`}
       {...rest}
     />
   );

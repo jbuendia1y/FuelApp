@@ -1,7 +1,5 @@
-import { Timestamp } from "@firebase/firestore";
-
-export default function dateTimeFormat(timestamp: Timestamp) {
-  const date = timestamp.toDate();
+export default function dateTimeFormat(timestamp: string) {
+  const date = new Date(timestamp);
   const language = navigator.language || "es-ES";
 
   const options: Intl.DateTimeFormatOptions = {
