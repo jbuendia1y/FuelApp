@@ -1,34 +1,35 @@
-import { loginWithEmailAndPassword } from "@/firebase/client";
 import Button from "@/components/Button";
-import AuthButtons from "./AuthButtons";
 import Form, { FormField, FormInput, FormLabel } from "@/components/Form";
 
 import { useHistory } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 export default function AuthLogin() {
   const history = useHistory();
+  const { login } = useAuth();
+
   return (
     <>
       <Form
-        validate={(data: { email: string; password: string }) => {
-          loginWithEmailAndPassword(data)
-            .then((res) => {
+        validate={(data: { document: string; password: string }) => {
+          login(data.document, data.password)
+            .then(() => {
               history.push("/compose/fuel-form");
             })
-            .catch((err) => console.log(err.code));
+            .catch((err) => console.log(err.message));
         }}
       >
         <FormField>
-          <FormLabel htmlFor="email">Email</FormLabel>
+          <FormLabel htmlFor="document">Documento</FormLabel>
           <FormInput
-            type="email"
-            name="email"
-            id="email"
-            placeholder="correo electrónico"
+            type="text"
+            name="document"
+            id="document"
+            placeholder="Documento: DNI"
           />
         </FormField>
         <FormField>
-          <FormLabel htmlFor="password">Password</FormLabel>
+          <FormLabel htmlFor="password">Contraseña</FormLabel>
           <FormInput
             type="password"
             name="password"
@@ -38,7 +39,6 @@ export default function AuthLogin() {
         </FormField>
         <Button type="submit">Iniciar Sessión</Button>
       </Form>
-      <AuthButtons />
     </>
   );
 }
