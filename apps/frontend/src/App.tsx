@@ -1,7 +1,7 @@
 import "./App.scss";
 
 import Header from "./components/Header";
-import Routes from "./components/Routes";
+import Routes from "./Routes";
 import Sidenav from "./components/Sidenav";
 
 function App() {

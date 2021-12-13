@@ -1,26 +1,30 @@
 .form {
-  display: flex;
-  flex-direction: column;
-
-  &__field {
-    display: flex;
-    flex-direction: column;
+  &-field {
     margin-bottom: 10px;
-  }
 
-  &__label {
-    font-size: 1em;
-  }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
 
-  &__input {
-    padding: 5px;
-    font-size: 1em;
+    input,
+    select {
+      display: block;
+      width: 100%;
 
-    border: 1px solid black;
-    border-radius: 5px;
+      outline: none;
+      background-color: white;
+      border: 1px solid #e3e3e3;
+      border-radius: 5px;
+      font-size: 1em;
 
-    &:focus {
-      outline: 0 solid transparent;
+      padding: 5px;
+      box-sizing: border-box;
+
+      &:focus {
+        border: 1px solid #dfdfdf;
+        outline: 1.5px solid #dfdfdf;
+      }
     }
   }
 }
