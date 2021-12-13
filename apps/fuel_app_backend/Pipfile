@@ -5,10 +5,14 @@ name = "pypi"
 
 [scripts]
 dev = "python manage.py runserver"
+makemigrations = "python manage.py makemigrations"
+migrate = "python manage.py migrate"
+create_superuser = "python manage.py createsuperuser"
 
 [packages]
 django = "==3.2.9"
 djangorestframework = "==3.12.4"
+django-cors-headers = "*"
 
 [dev-packages]
 autopep8 = "*"
