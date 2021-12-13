@@ -1,0 +1,38 @@
+import { environment } from "@/environments/environment";
+import { IFuelForm, IFuelFormForm } from "@/interfaces";
+import responseCamelizerAxios from "@/utils/responseCamelizerAxios";
+import BaseRepository from "./BaseRepository";
+
+interface FuelFormParams {
+  vehicleId: number;
+}
+
+class FuelFormRepository extends BaseRepository<IFuelFormForm, IFuelForm> {
+  private BASE_URL = environment.SERVER_BASE_URL + "/fuel-forms/";
+
+  create(item: IFuelFormForm): Promise<IFuelForm> {
+    return new Promise((resolve, reject) => {
+      responseCamelizerAxios
+        .post(this.BASE_URL, item)
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((err) => reject(err.message));
+    });
+  }
+
+  fetchAll(params?: FuelFormParams): Promise<IFuelForm[]> {
+    return new Promise((resolve, reject) => {
+      responseCamelizerAxios
+        .get(this.BASE_URL, {
+          params,
+        })
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((err) => reject(err.message));
+    });
+  }
+}
+
+export default new FuelFormRepository();
