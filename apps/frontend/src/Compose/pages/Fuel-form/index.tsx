@@ -39,8 +39,7 @@ export default function FuelForm() {
       gallons,
       hourmeter,
       pricePerGallon,
-      user_id: (user as User).id,
-      vehicle_id: 1,
+      vehicleId: 1,
     })
       .then((res) => {})
       .catch(alert);
