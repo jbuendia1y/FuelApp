@@ -4,15 +4,15 @@ import ShowMoreIcon from "../Icons/ShowMoreIcon";
 import WithAuth from "./components/WithAuth";
 import WithoutAuth from "./components/WithoutAuth";
 
-import useUser from "@/hooks/useUser";
+import useAuth from "@/Auth/hooks/useAuth";
 
 export default function Navbar() {
-  const user = useUser();
+  const { user } = useAuth();
   const listRef = createRef<HTMLUListElement>();
 
   return (
     <nav className="nav">
-      {user && (
+      {!!user && (
         <div className="nav__user">
           <ShowMoreIcon
             onClick={() => {
@@ -28,11 +28,7 @@ export default function Navbar() {
         ref={listRef}
         className={`nav__list${user ? " nav__list-authenticated" : ""}`}
       >
-        {user ? (
-          <WithAuth avatar={user.avatar} name={user.name} />
-        ) : (
-          <WithoutAuth />
-        )}
+        {!!user ? <WithAuth /> : <WithoutAuth />}
       </ul>
     </nav>
   );

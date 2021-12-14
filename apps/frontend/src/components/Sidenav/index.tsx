@@ -1,5 +1,4 @@
-import useRole from "@/hooks/useRole";
-import useUser from "@/hooks/useUser";
+import useAuth from "@/Auth/hooks/useAuth";
 import { createRef } from "react";
 import Button from "../Button";
 import Assessment from "../Icons/Assessment";
@@ -10,18 +9,16 @@ import KeyIcon from "../Icons/KeyIcon";
 import List from "../Icons/List";
 import MenuIcon from "../Icons/MenuIcon";
 import AdminList from "./components/AdminList";
-import EnterprisesMemberList from "./components/EnterprisesMemberList";
 import SidenavItem from "./components/sidenavItem";
 import "./sidenav.scss";
 
 export default function Sidenav() {
-  const user = useUser();
-  const role = useRole();
+  const { user } = useAuth();
   const sidenavRef = createRef<HTMLDivElement>();
 
   return (
     <>
-      {user && (
+      {!!user && (
         <>
           <Button
             onClick={() => {
@@ -40,18 +37,14 @@ export default function Sidenav() {
                 </SidenavItem>
                 <SidenavItem href="/compose/fuel-form">
                   <Checklist />
-                  Fuel Form
+                  Formulario
                 </SidenavItem>
                 <SidenavItem href="/historic">
                   <List />
                   Historial
                 </SidenavItem>
-                <SidenavItem href="/enterprises">
-                  <Business />
-                  Empresas
-                </SidenavItem>
               </ul>
-              {role && (
+              {/*  {role && (
                 <ul className="sidenav__list">
                   <SidenavItem href="/vehicles">
                     <CarIcon /> Vehiculos
@@ -65,8 +58,7 @@ export default function Sidenav() {
                     <KeyIcon /> Solicitudes
                   </SidenavItem>
                 </ul>
-              )}
-              <EnterprisesMemberList />
+              )} */}
             </div>
           </div>
         </>
