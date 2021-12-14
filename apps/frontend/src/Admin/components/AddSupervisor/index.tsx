@@ -1,22 +1,18 @@
 import Button from "@/components/Button";
 import { FormField, FormInput, FormLabel } from "@/components/Form";
-import { addSupervisor } from "@/firebase/firestore";
-import useCurrentEnterprise from "@/hooks/useCurrentEnterprise";
 import { ChangeEvent, FormEvent, useState } from "react";
 
 export default function AddSupervisor() {
-  const { currentEnterprise } = useCurrentEnterprise();
   const [userId, setUserId] = useState("");
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!currentEnterprise) return;
+    /*     e.preventDefault();
     if (userId.length === 0) return;
-    addSupervisor(currentEnterprise.id, userId)
+    addSupervisor(userId)
       .then((res) => {
         alert("Supervisor añadido");
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => console.log(err.message)); */
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

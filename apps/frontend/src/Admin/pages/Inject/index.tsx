@@ -1,34 +1,41 @@
 import xlsx from "xlsx";
-import useUser from "@/hooks/useUser";
-import useCurrentEnterprise from "@/hooks/useCurrentEnterprise";
-import FuelPerformance from "@/firebase/firestore/fuelPerformanceForm";
 import { useState } from "react";
 import ProgressBar from "@/components/ProgressBar";
+import useAuth from "@/Auth/hooks/useAuth";
+import useVehicles from "@/Vehicles/hooks/useVehicles";
+import FuelFormRepository from "@/repositories/FuelFormRepository";
 
 export default function Inject() {
   const [count, setCount] = useState(0);
-  const user = useUser();
-  const { currentEnterprise } = useCurrentEnterprise();
+  const { user } = useAuth();
+  const { vehicles } = useVehicles();
 
   const normalizeExcelJsonToObject = (data: any) => {
     return {
-      horometro: data.HOROMETRO === undefined ? data.TACOMETRO : data.HOROMETRO,
-      galones: data.GALONES,
-      precioPorGalon: data["PRECIO X GL"],
-      userId: user.uid,
-      createdAt: data.FECHA,
+      hourmeter: data.HOROMETRO === undefined ? data.TACOMETRO : data.HOROMETRO,
+      gallons: data.GALONES,
+      pricePerGallon: data["PRECIO X GL"],
+      userId: user?.id,
+      createdAt: new Date(data.FECHA).toUTCString(),
     };
   };
 
   const handleInputChange = async (e: any) => {
     const target = e.target;
-    if (!currentEnterprise) return;
+    if (!!vehicles === false) return;
+
     if (target.files.length === 0) return;
 
-    const vehicle = target.files[0].name
+    const placa = target.files[0].name
       .split("Control de Combustible ")[1]
       .split(".")[0]
       .toLocaleUpperCase();
+
+    const _vehicles = vehicles
+      ?.filter((item) => item.placa === placa)
+      .map((item) => item.id);
+    if (_vehicles === undefined) return;
+    const vehicleId = _vehicles[0];
 
     let mainData: any[];
 
@@ -41,21 +48,22 @@ export default function Inject() {
         return;
       const data = new Uint8Array(e.target?.result);
       const workbook = xlsx.read(data, { type: "array", cellDates: true });
-      mainData = xlsx.utils.sheet_to_json(workbook.Sheets[vehicle]);
+      mainData = xlsx.utils.sheet_to_json(workbook.Sheets[placa]);
 
       const formatedExcel = mainData.map(normalizeExcelJsonToObject);
       for (const item of formatedExcel) {
-        await new FuelPerformance(item, {
-          id: currentEnterprise.id,
-          vehicle,
-        }).addRegister();
+        FuelFormRepository.create({
+          ...item,
+          vehicleId: vehicleId,
+        });
+
         setCount((value) => {
           const computedValue = ((value + 1) / formatedExcel.length) * 100;
           return parseFloat(computedValue.toFixed(2));
         });
       }
 
-      alert(`Inject forms to ${vehicle} finsihed`);
+      alert(`Inject forms to ${placa} finsihed`);
     };
   };
 

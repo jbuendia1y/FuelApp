@@ -9,7 +9,6 @@ import KeyIcon from "../Icons/KeyIcon";
 import List from "../Icons/List";
 import MenuIcon from "../Icons/MenuIcon";
 import AdminList from "./components/AdminList";
-import EnterprisesMemberList from "./components/EnterprisesMemberList";
 import SidenavItem from "./components/sidenavItem";
 import "./sidenav.scss";
 
