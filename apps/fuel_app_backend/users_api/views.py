@@ -1,40 +1,55 @@
-from rest_framework import status, viewsets
-from rest_framework.views import APIView
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.request import Request
 
-from rest_framework.decorators import action
+from rest_framework.decorators import api_view
 
 from django.contrib.auth import get_user_model, login
-from users_api.models import UserProfile
+from rest_framework.views import APIView
+from fuel_app_backend.constants import ADMIN_ROLE, CONDUCTOR_ROLE, SUPERVISOR_ROLE
 from users_api.serializers import UserLoginSerializer, UserModelSerializer
 
 
 # Create your views here.
 
-class UserViewSet(viewsets.GenericViewSet):
-    queryset = UserProfile.objects.filter(is_active=True)
-    serializer_class = UserLoginSerializer
+@api_view(["POST"])
+def login(request: Request):
+    serializer = UserLoginSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    user, token = serializer.save()
 
-    @action(detail=False, methods=["POST"])
-    def login(self, request: Request):
-        serializer = UserLoginSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user, token = serializer.save()
+    login(request, user)
 
-        login(request, user)
+    data = {
+        "user": UserModelSerializer(user).data,
+        "token": token
+    }
 
-        data = {
-            "user": UserModelSerializer(user).data,
-            "token": token
+    return Response(data=data, status=status.HTTP_202_ACCEPTED)
+
+
+class UserView(APIView):
+    def get(self, request: Request):
+        role = request.query_params.get("role", CONDUCTOR_ROLE)
+        role = role[0].upper() + f"{role.split(role[0])[1]}"
+
+        is_role = role in [ADMIN_ROLE, SUPERVISOR_ROLE, CONDUCTOR_ROLE]
+
+        if is_role == False:
+            return Response(data={
+                "message": f"The role: {role} not exist in the database"
+            }, status=status.HTTP_404_NOT_FOUND)
+
+        filters = {
+            "is_staff": False,
+            "is_superuser": False,
+            "role": role
         }
 
-        return Response(data=data, status=status.HTTP_202_ACCEPTED)
+        if role == ADMIN_ROLE:
+            filters = {
+                "role": role
+            }
 
-
-class UsersApiView(APIView):
-
-    def get(self, request: Request, format=None):
-        users = get_user_model().objects.filter(is_staff=False, is_superuser=False)
-
-        return Response(users.values(), status=status.HTTP_200_OK)
+        users = get_user_model().objects.filter(**filters)
+        return Response(data=users.values(), status=status.HTTP_200_OK)

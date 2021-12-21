@@ -8,6 +8,7 @@ dev = "python manage.py runserver"
 makemigrations = "python manage.py makemigrations"
 migrate = "python manage.py migrate"
 create_superuser = "python manage.py createsuperuser"
+changepassword = "python manage.py changepassword"
 
 [packages]
 django = "==3.2.9"
