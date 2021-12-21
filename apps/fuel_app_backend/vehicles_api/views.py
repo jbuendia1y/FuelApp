@@ -40,8 +40,3 @@ class VehiclesApiView(APIView):
 
     def delete(self, request: Request, *args):
         return Response(data={"pk": args}, status=status.HTTP_200_OK)
-
-
-class VehiclesApiIdView(APIView):
-    def delete(self, request: Request):
-        pass
