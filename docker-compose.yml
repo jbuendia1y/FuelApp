@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  frontend:
+    build:
+      context: ./apps/frontend
+      dockerfile: Dockerfile
+    links:
+      - backend
+  backend:
+    build:
+      context: ./apps/fuel_app_backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
