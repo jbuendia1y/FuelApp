@@ -28,12 +28,13 @@ export default class User implements IUser {
   }
 
   getShortName() {
-    if (this.firstName.includes(" ") && this.lastName.includes(" ")) {
-      const firstName = this.firstName.split(" ");
-      const lastName = this.lastName.split(" ");
-
-      return firstName + " " + lastName;
+    if (!this.firstName.includes(" ") || !this.lastName.includes(" ")) {
+      return this.firstName;
     }
-    return this.firstName;
+
+    const firstName = this.firstName.split(" ")[1];
+    const lastName = this.lastName.split(" ")[0];
+
+    return firstName + " " + lastName;
   }
 }
