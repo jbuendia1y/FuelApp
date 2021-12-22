@@ -1,7 +1,9 @@
 import { WriteI, ReadI } from "./interfaces";
 
-export default class BaseRepository<T, I = T> implements WriteI<T>, ReadI<I> {
-  create(item: T): Promise<I> {
+export default class BaseRepository<T, I = T>
+  implements WriteI<T, I>, ReadI<T>
+{
+  create(item: I): Promise<T> {
     return new Promise((resolve, reject) => {
       throw new Error("This method is incomplete, write the code .");
     });
@@ -13,19 +15,19 @@ export default class BaseRepository<T, I = T> implements WriteI<T>, ReadI<I> {
     });
   }
 
-  update(id: string, item: T): Promise<I> {
+  update(id: string, item: T): Promise<T> {
     return new Promise((resolve, reject) => {
       throw new Error("This method is incomplete, write the code .");
     });
   }
 
-  fetchAll(params?: any): Promise<I[]> {
+  fetchAll(params?: any): Promise<T[]> {
     return new Promise((resolve, reject) => {
       throw new Error("This method is incomplete, write the code .");
     });
   }
 
-  fetchOne(id: string): Promise<I> {
+  fetchOne(id: string): Promise<T> {
     return new Promise((resolve, reject) => {
       throw new Error("This method is incomplete, write the code .");
     });

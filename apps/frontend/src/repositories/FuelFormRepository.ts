@@ -4,10 +4,11 @@ import responseCamelizerAxios from "@/utils/responseCamelizerAxios";
 import BaseRepository from "./BaseRepository";
 
 interface FuelFormParams {
-  vehicleId: number;
+  vehicleId?: number;
+  userId?: number;
 }
 
-class FuelFormRepository extends BaseRepository<IFuelFormForm, IFuelForm> {
+class FuelFormRepository extends BaseRepository<IFuelForm, IFuelFormForm> {
   private BASE_URL = environment.SERVER_BASE_URL + "/fuel-forms/";
 
   create(item: IFuelFormForm): Promise<IFuelForm> {

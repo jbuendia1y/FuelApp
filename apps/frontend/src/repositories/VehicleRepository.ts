@@ -1,12 +1,12 @@
 import { environment } from "@/environments/environment";
-import { IVehicle } from "@/interfaces";
+import { IVehicle, IVehicleForm } from "@/interfaces";
 import axios from "axios";
 import BaseRepository from "./BaseRepository";
 
-class VehicleRepository extends BaseRepository<IVehicle> {
+class VehicleRepository extends BaseRepository<IVehicle, IVehicleForm> {
   private readonly BASE_URL = environment.SERVER_BASE_URL + "/vehicles/";
 
-  public create(item: IVehicle): Promise<IVehicle> {
+  public create(item: IVehicleForm): Promise<IVehicle> {
     return new Promise((resolve, reject) => {
       axios
         .post(this.BASE_URL, item)
@@ -16,7 +16,6 @@ class VehicleRepository extends BaseRepository<IVehicle> {
         .catch(reject);
     });
   }
-
   public update(id: string, item: IVehicle): Promise<IVehicle> {
     return new Promise((resolve, reject) => {
       axios
