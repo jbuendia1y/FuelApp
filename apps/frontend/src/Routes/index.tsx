@@ -7,6 +7,8 @@ import ProtectedRoute from "./protectedRoute";
 const Auth = lazy(() => import("@/Auth"));
 const Compose = lazy(() => import("@/Compose"));
 const Profile = lazy(() => import("@/Profile"));
+const Vehicles = lazy(() => import("@/Vehicles"));
+const FuelForms = lazy(() => import("@/FuelForms"));
 const PageNotFound = lazy(() => import("@/PageNotFound"));
 
 export default function Routes() {
@@ -33,6 +35,14 @@ export default function Routes() {
 
         <ProtectedRoute path="/profile" isAuth={user} exact>
           <Profile />
+        </ProtectedRoute>
+
+        <ProtectedRoute path="/vehicles" isAuth={user} exact>
+          <Vehicles />
+        </ProtectedRoute>
+
+        <ProtectedRoute path="/fuel-forms" isAuth={user} exact>
+          <FuelForms />
         </ProtectedRoute>
 
         {/*         {process.env.NODE_ENV === "development" && (

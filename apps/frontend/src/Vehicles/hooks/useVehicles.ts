@@ -12,7 +12,7 @@ export default function useVehicles() {
       setVehicles(res);
       setLoading(false);
     });
-  });
+  }, []);
 
   return { loading, vehicles };
 }

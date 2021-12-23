@@ -25,10 +25,7 @@
 
   &-box {
     height: 100%;
-    overflow-y: scroll;
     box-sizing: border-box;
-
-    @include scroolBar();
   }
 
   &__list {

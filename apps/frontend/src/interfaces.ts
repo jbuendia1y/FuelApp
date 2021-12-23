@@ -1,8 +1,11 @@
 import { Roles } from "@/constants";
 
-export interface IVehicle {
-  id: number;
+export interface IVehicleForm {
   placa: string;
+}
+
+export interface IVehicle extends IVehicleForm {
+  id: number;
 }
 
 export interface IFuelFormForm {
@@ -21,6 +24,13 @@ export interface IFuelForm extends IFuelFormForm {
   createdAt: string;
 
   userId: number;
+}
+
+export interface IUserRegister {
+  document: string;
+
+  firstName: string;
+  lastName: string;
 }
 
 export interface IUser {
