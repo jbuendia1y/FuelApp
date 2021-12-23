@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "ms-python.python",
+    "esbenp.prettier-vscode",
+    "formulahendry.auto-rename-tag",
+    "dbaeumer.vscode-eslint",
+    "ms-python.vscode-pylance"
+  ]
+}
