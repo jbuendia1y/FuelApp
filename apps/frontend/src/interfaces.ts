@@ -26,6 +26,11 @@ export interface IFuelForm extends IFuelFormForm {
   userId: number;
 }
 
+export interface IFuelFormPopulate extends IFuelForm {
+  user: IUser;
+  vehicle: IVehicle;
+}
+
 export interface IUserRegister {
   document: string;
 
