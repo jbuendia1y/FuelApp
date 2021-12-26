@@ -8,11 +8,14 @@ dev = "python manage.py runserver"
 makemigrations = "python manage.py makemigrations"
 migrate = "python manage.py migrate"
 create_superuser = "python manage.py createsuperuser"
+changepassword = "python manage.py changepassword"
+init_data = "bash ./scripts/init_data.sh"
 
 [packages]
 django = "==3.2.9"
 djangorestframework = "==3.12.4"
 django-cors-headers = "*"
+pandas = "*"
 
 [dev-packages]
 autopep8 = "*"

@@ -3,23 +3,24 @@ import "./fuel-form.scss";
 import Button from "@/components/Button";
 import Form, { FormField } from "@/components/Form";
 import FuelFormRepository from "@/repositories/FuelFormRepository";
-import { ChangeEvent, useState } from "react";
-import useAuth from "@/Auth/hooks/useAuth";
-import User from "@/Auth/models/User";
+import { ChangeEvent, useEffect, useState } from "react";
 import useVehicles from "@/Vehicles/hooks/useVehicles";
 
 export default function FuelForm() {
   const [hourmeter, setHourmeter] = useState<undefined | number>();
   const [gallons, setGallons] = useState<undefined | number>();
   const [pricePerGallon, setPricePerGallon] = useState<undefined | number>();
+  const [vehicleId, setVehicleId] = useState<undefined | number>();
 
-  const { user } = useAuth();
+  const [onDataSubmit, setOnDataSubmit] = useState(false);
+
   const { vehicles } = useVehicles();
 
   const settersObj: any = {
     HOURMETER: setHourmeter,
     GALLONS: setGallons,
     PRICEPERGALLON: setPricePerGallon,
+    VEHICLEID: setVehicleId,
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -33,24 +34,32 @@ export default function FuelForm() {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    if (!gallons || !hourmeter || !pricePerGallon) return;
+    if (!gallons || !hourmeter || !pricePerGallon || !vehicleId) return;
+    setOnDataSubmit(true);
+  };
+
+  useEffect(() => {
+    if (!onDataSubmit) return;
+    if (!gallons || !hourmeter || !pricePerGallon || !vehicleId) return;
 
     FuelFormRepository.create({
       gallons,
       hourmeter,
       pricePerGallon,
-      vehicleId: 1,
+      vehicleId,
     })
-      .then((res) => {})
+      .then((res) => {
+        setOnDataSubmit(false);
+      })
       .catch(alert);
-  };
+  }, [onDataSubmit]);
 
   return (
     <>
       <Form className="fuel-form" onSubmit={handleSubmit}>
         <FormField className="form-field">
-          <label htmlFor="vehicle_id">Vehículo</label>
-          <select required={true} name="vehicle_id" id="vehicle_id">
+          <label htmlFor="vehicleId">Vehículo</label>
+          <select required={true} name="vehicleId" id="vehicleId">
             <option>...</option>
             {vehicles?.map((item) => {
               return (
@@ -85,14 +94,17 @@ export default function FuelForm() {
         </FormField>
         <FormField className="form-field">
           <label htmlFor="pricePerGallon">Precio por Galón</label>
-          <input
-            type="number"
-            required={true}
-            step={0.001}
-            onChange={handleChange}
-            name="pricePerGallon"
-            id="pricePerGallon"
-          />
+          <span className="price">
+            <input
+              type="number"
+              required={true}
+              step={0.001}
+              onChange={handleChange}
+              name="pricePerGallon"
+              id="pricePerGallon"
+              className="price"
+            />
+          </span>
         </FormField>
         <Button className="fuel-form__button" type="submit">
           Enviar

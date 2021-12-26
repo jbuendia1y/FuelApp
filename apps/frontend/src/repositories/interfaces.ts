@@ -1,5 +1,5 @@
-export interface WriteI<T> {
-  create(item: T): Promise<any>;
+export interface WriteI<T, I> {
+  create(item: I): Promise<any>;
   update(id: string, item: T): Promise<any>;
   delete(id: string): Promise<boolean>;
 }

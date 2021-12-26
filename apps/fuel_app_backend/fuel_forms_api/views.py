@@ -1,5 +1,4 @@
 from django.contrib.auth.models import AnonymousUser
-from django.core import serializers as djangoSerializers
 
 from rest_framework.views import APIView
 from rest_framework.request import Request
@@ -10,14 +9,27 @@ from fuel_forms_api.models import FuelForm
 from fuel_forms_api import serializers
 # Create your views here.
 
-import json
-
 
 class FuelFormsView(APIView):
     serializer_class = serializers.FuelFormSerializer
 
-    def get(self, request: Request, format=None):
-        data = FuelForm.objects.all()
+    def get(self, request: Request):
+        vehicle_id = request.query_params.get("vehicle_id", None)
+        user_id = request.query_params.get("user_id", None)
+
+        filters = {}
+        if user_id:
+            filters = {
+                **filters,
+                "user_id": user_id
+            }
+        if vehicle_id:
+            filters = {
+                **filters,
+                "vehicle_id": vehicle_id
+            }
+
+        data = FuelForm.objects.filter(**filters)
 
         return Response(
             data.values(),

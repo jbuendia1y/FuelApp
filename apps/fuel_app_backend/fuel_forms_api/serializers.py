@@ -1,18 +1,8 @@
 from rest_framework import serializers
 from fuel_forms_api.compute_fuel_form_data import ComputeFuelFormData
 from fuel_forms_api.models import FuelForm
-from vehicles_api.models import Vehicle
 
 import datetime
-
-
-class VehicleSerializerFuelForm(serializers.ModelSerializer):
-    class Meta:
-        model = Vehicle
-        fields = [
-            "id",
-            "placa"
-        ]
 
 
 class FuelFormSerializer(serializers.ModelSerializer):

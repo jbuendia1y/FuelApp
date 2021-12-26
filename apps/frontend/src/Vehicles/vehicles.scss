@@ -1,0 +1,33 @@
+.vehicles {
+  height: 90vh;
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+
+  &__compose {
+    display: flex;
+    align-items: flex-end;
+
+    .form-field {
+      margin-bottom: 0;
+    }
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+  }
+
+  &__image {
+    background-color: rgb(167, 167, 167);
+    font-size: 0;
+    height: 50px;
+    width: 50px;
+  }
+
+  &__text {
+    flex-grow: 1;
+    padding-left: 10px;
+    box-sizing: border-box;
+  }
+}
