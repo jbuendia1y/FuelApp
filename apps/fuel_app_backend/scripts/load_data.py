@@ -9,9 +9,15 @@ import json
 
 ROOT_DATA = "data"
 
-data_files = os.listdir(ROOT_DATA)
-placas = [file.split(" ")[3].split(".")[0]
-          for file in data_files if file.endswith(".xlsx")]
+data_files = []
+
+for file in os.listdir(ROOT_DATA):
+    if file.endswith(".xlsx"):
+        data_files.append(file)
+
+placas = [file.split(" ")[3].split(".")[0] for file in data_files]
+
+
 dfs = {}
 default_columns = ["FECHA", "TACOMETRO", "GALONES", "PRECIO X GL",
                    "GASTO ABASTECIMIENTO", "KM RECORRIDO", "KM / Gln", "S/ x Km"]
