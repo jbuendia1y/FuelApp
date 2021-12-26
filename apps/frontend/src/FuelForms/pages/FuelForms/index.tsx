@@ -1,16 +1,17 @@
 import dateTimeFormat from "@/utils/dateTimeFormat";
 import useFuelForms from "@/FuelForms/hooks/useFuelForms";
+import { Link } from "react-router-dom";
 
 export default function FuelForms() {
   const { fuelForms } = useFuelForms();
 
   return (
     <div>
-      {fuelForms?.map((fuelForm) => {
+      {fuelForms?.map((fuelForm, index) => {
         return (
-          <div>
+          <div key={index}>
             <p>
-              Horómetro: <span>{fuelForm.hourmeter}</span>
+              Horómetro: <span>{fuelForm.hourMeter}</span>
             </p>
             <p>
               KM X Galón : <span>{fuelForm.kmPerGallon} km</span>
@@ -27,6 +28,7 @@ export default function FuelForms() {
             <p>
               Registrado el : <span>{dateTimeFormat(fuelForm.createdAt)}</span>
             </p>
+            <Link to={"/fuel-forms/" + fuelForm.id}>Ver más</Link>
           </div>
         );
       })}

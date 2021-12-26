@@ -1,19 +1,22 @@
 import { Switch, Route } from "react-router-dom";
 import { lazy } from "react";
+import FuelForm from "./pages/FuelForm";
 
 const FuelFormsPage = lazy(() => import("./pages/FuelForms"));
 
 export default function FuelForms() {
-  const { fuelForms } = useFuelForms();
-
   return (
-    <Switch basename="fuel-forms">
-      <Route path="/">
+    <Switch>
+      <Route path="/fuel-forms" exact>
         <FuelFormsPage />
       </Route>
-      <Route path="/:id">
-        <span>FuelForm</span>
-      </Route>
+      <Route
+        path="/fuel-forms/:id"
+        render={(props) => {
+          return <FuelForm id={props.match.params.id}></FuelForm>;
+        }}
+        exact
+      ></Route>
     </Switch>
   );
 }

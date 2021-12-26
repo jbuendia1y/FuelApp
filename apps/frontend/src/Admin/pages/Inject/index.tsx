@@ -12,7 +12,7 @@ export default function Inject() {
 
   const normalizeExcelJsonToObject = (data: any) => {
     return {
-      hourmeter: data.HOROMETRO === undefined ? data.TACOMETRO : data.HOROMETRO,
+      hourMeter: data.HOROMETRO === undefined ? data.TACOMETRO : data.HOROMETRO,
       gallons: data.GALONES,
       pricePerGallon: data["PRECIO X GL"],
       userId: user?.id,

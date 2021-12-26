@@ -9,7 +9,7 @@ export interface IVehicle extends IVehicleForm {
 }
 
 export interface IFuelFormForm {
-  hourmeter: number;
+  hourMeter: number;
   gallons: number;
   pricePerGallon: number;
 
@@ -17,6 +17,7 @@ export interface IFuelFormForm {
 }
 
 export interface IFuelForm extends IFuelFormForm {
+  id: number;
   fullPayment: number;
   kmTraveled: number;
   kmPerGallon: number;

@@ -1,13 +1,12 @@
-import { IFuelFormPopulate } from "@/interfaces";
 import useFuelForm from "../../hooks/useFuelForm";
 import dateTimeFormat from "@/utils/dateTimeFormat";
 
-export default function FuelForm(id: number) {
+export default function FuelForm({ id }: { id: string }) {
   const { fuelForm, loading } = useFuelForm(id);
 
   return (
     <div>
-      {loading && fuelForm ? (
+      {fuelForm === undefined ? (
         <span>Loading ...</span>
       ) : (
         <>
@@ -17,7 +16,7 @@ export default function FuelForm(id: number) {
 
             <ul>
               <li>
-                Horómetro : <span>{fuelForm.hourmeter}</span>
+                Horómetro : <span>{fuelForm.hourMeter}</span>
               </li>
               <li>
                 KM X Galón : <span>{fuelForm.kmPerGallon} km</span>
@@ -34,7 +33,7 @@ export default function FuelForm(id: number) {
             </ul>
           </div>
           <div>
-            <div>
+            {/* <div>
               <h2>{`${fuelForm.user.firstName} ${fuelForm.user.lastName}`}</h2>
               <p>
                 DNI: <span>{fuelForm.user.document}</span>
@@ -45,7 +44,7 @@ export default function FuelForm(id: number) {
               <p>
                 Placa: <span>{fuelForm.vehicle.placa}</span>
               </p>
-            </div>
+            </div> */}
           </div>
         </>
       )}

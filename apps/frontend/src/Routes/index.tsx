@@ -41,7 +41,11 @@ export default function Routes() {
           <Vehicles />
         </ProtectedRoute>
 
-        <ProtectedRoute path="/fuel-forms" isAuth={user} exact>
+        <ProtectedRoute
+          path={["/fuel-forms", "/fuel-forms/:id"]}
+          isAuth={user}
+          exact
+        >
           <FuelForms />
         </ProtectedRoute>
 
