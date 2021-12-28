@@ -1,11 +1,12 @@
 from django.contrib.auth.models import AnonymousUser
+from django.contrib.auth import get_user_model
 
 from rest_framework.views import APIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework import status
 
-from fuel_forms_api.models import FuelForm
+from fuel_forms_api.models import FuelForm, populate_fuel_form
 from fuel_forms_api import serializers
 # Create your views here.
 
@@ -32,7 +33,7 @@ class FuelFormView(APIView):
     def get(self, request: Request, *args, **kwargs):
         id = kwargs.get('id')
 
-        data = FuelForm.objects.filter(id=id).values()[0]
+        data = populate_fuel_form(id)
 
         return Response(data=data, status=status.HTTP_200_OK)
 

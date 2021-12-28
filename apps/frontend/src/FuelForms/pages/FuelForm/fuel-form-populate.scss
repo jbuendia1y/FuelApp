@@ -1,0 +1,18 @@
+.list {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  max-width: 360px;
+
+  font-size: 1.05em;
+
+  li {
+    padding: 7px;
+    display: flex;
+    justify-content: space-between;
+
+    &:nth-child(2n + 1) {
+      background-color: var(--bg-secondary);
+    }
+  }
+}

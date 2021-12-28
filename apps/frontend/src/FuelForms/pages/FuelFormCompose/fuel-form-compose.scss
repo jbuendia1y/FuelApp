@@ -1,0 +1,14 @@
+.fuel-form {
+  &-box {
+    display: grid;
+    max-width: 360px;
+    margin: 0 auto;
+    align-items: center;
+
+    min-height: 90vh;
+  }
+
+  &__button {
+    width: 100%;
+  }
+}

@@ -12,20 +12,20 @@ from users_api.serializers import UserLoginSerializer, UserModelSerializer
 
 # Create your views here.
 
-@api_view(["POST"])
-def login(request: Request):
-    serializer = UserLoginSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-    user, token = serializer.save()
+class LoginApiView(APIView):
+    def post(self, request: Request):
+        serializer = UserLoginSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user, token = serializer.save()
 
-    login(request, user)
+        login(request, user)
 
-    data = {
-        "user": UserModelSerializer(user).data,
-        "token": token
-    }
+        data = {
+            "user": UserModelSerializer(user).data,
+            "token": token
+        }
 
-    return Response(data=data, status=status.HTTP_202_ACCEPTED)
+        return Response(data=data, status=status.HTTP_202_ACCEPTED)
 
 
 class UserView(APIView):

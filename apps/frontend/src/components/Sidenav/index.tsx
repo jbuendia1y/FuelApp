@@ -1,5 +1,6 @@
 import useAuth from "@/Auth/hooks/useAuth";
 import { ADMIN_ROLE, SUPERVISOR_ROLE } from "@/constants";
+import { FUEL_FORMS_ROOT_PATH } from "@/FuelForms";
 import { createRef } from "react";
 import Button from "../Button";
 import CarIcon from "../Icons/CarIcon";
@@ -28,11 +29,11 @@ export default function Sidenav() {
           <div ref={sidenavRef} className="sidenav">
             <div className="sidenav-box">
               <ul className="sidenav__list">
-                <SidenavItem href="/compose/fuel-form">
+                <SidenavItem href={FUEL_FORMS_ROOT_PATH + "/compose"}>
                   <Checklist />
                   Formulario
                 </SidenavItem>
-                <SidenavItem href="/fuel-forms">
+                <SidenavItem href={FUEL_FORMS_ROOT_PATH}>
                   <List />
                   Formularios
                 </SidenavItem>
