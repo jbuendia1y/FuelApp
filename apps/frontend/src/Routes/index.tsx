@@ -22,7 +22,7 @@ export default function Routes() {
         </Route>
 
         <Route path={"/login"} exact>
-          {!!user ? <Redirect to={"/fuel-forms"} /> : <Auth />}
+          <Auth />
         </Route>
 
         <ProtectedRoute path="/profile" isAuth={user} exact>
@@ -33,7 +33,7 @@ export default function Routes() {
           <Vehicles />
         </ProtectedRoute>
 
-        <ProtectedRoute path={FUEL_FORMS_ROOT_PATH}>
+        <ProtectedRoute path={FUEL_FORMS_ROOT_PATH} isAuth={user}>
           <FuelForms />
         </ProtectedRoute>
 

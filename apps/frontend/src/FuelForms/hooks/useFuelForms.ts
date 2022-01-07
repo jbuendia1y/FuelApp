@@ -2,10 +2,17 @@ import { IFuelForm } from "@/interfaces";
 import FuelFormRepository from "@/repositories/FuelFormRepository";
 import { useEffect, useState } from "react";
 
-export default function useFuelForms(params?: {
-  vehicleId?: number;
-  userId?: number;
-}) {
+interface IUseFuelForms{
+  params?: {
+    vehicleId?: number;
+    userId?: number;
+  },reverse:boolean
+}
+
+export default function useFuelForms({
+  params,
+  reverse = false
+}:IUseFuelForms) {
   const [fuelForms, setFuelForms] = useState<undefined | IFuelForm[]>();
   const [loading, setLoading] = useState(false);
 
@@ -15,7 +22,8 @@ export default function useFuelForms(params?: {
       vehicleId: params?.vehicleId,
       userId: params?.userId,
     }).then((res) => {
-      setFuelForms(res);
+      if(reverse) setFuelForms(res.reverse())
+      else setFuelForms(res);
       setLoading(false);
     });
   }, []);

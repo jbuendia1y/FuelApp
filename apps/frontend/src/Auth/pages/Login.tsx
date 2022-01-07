@@ -1,10 +1,11 @@
 import Button from "@/components/Button";
-import Form, { FormField, FormInput, FormLabel } from "@/components/Form";
+import Form, { FormField } from "@/components/Form";
+import { colors } from "@/constants";
 
 import { useHistory } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
+import useAuth from "@/Auth/hooks/useAuth";
 
-export default function AuthLogin() {
+export default function Login() {
   const history = useHistory();
   const { login } = useAuth();
 
@@ -18,10 +19,14 @@ export default function AuthLogin() {
             })
             .catch((err) => console.log(err.message));
         }}
+        css={{
+          width: "360px",
+          marginBottom: "10px",
+        }}
       >
         <FormField>
-          <FormLabel htmlFor="document">Documento</FormLabel>
-          <FormInput
+          <label htmlFor="document">Documento</label>
+          <input
             type="text"
             name="document"
             id="document"
@@ -29,15 +34,25 @@ export default function AuthLogin() {
           />
         </FormField>
         <FormField>
-          <FormLabel htmlFor="password">Contraseña</FormLabel>
-          <FormInput
+          <label htmlFor="password">Contraseña</label>
+          <input
             type="password"
             name="password"
             id="password"
             placeholder="contraseña"
           />
         </FormField>
-        <Button type="submit">Iniciar Sessión</Button>
+        <Button
+          css={{
+            textAlign: "center",
+            justifyContent: "center",
+            width: "100%",
+            backgroundColor: colors.white,
+          }}
+          type="submit"
+        >
+          Iniciar Sessión
+        </Button>
       </Form>
     </>
   );

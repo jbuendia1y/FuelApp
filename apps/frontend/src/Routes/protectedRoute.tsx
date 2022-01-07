@@ -9,9 +9,11 @@ export default function ProtectedRoute({
   role,
   ...rest
 }: ProtectedRouteProps) {
+  if (!!isAuth === false) return <Redirect to="/login" />;
+
   return (
     <Route path={path} {...rest}>
-      {isAuth === null && currentRole !== role && <Redirect to="/login" />}
+      {currentRole !== role && <Redirect to="/login" />}
       {children}
     </Route>
   );

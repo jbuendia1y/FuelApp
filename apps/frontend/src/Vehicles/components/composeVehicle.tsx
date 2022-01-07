@@ -1,7 +1,13 @@
 import Button from "@/components/Button";
 import Form, { FormField } from "@/components/Form";
 import VehicleRepository from "@/repositories/VehicleRepository";
+import { css } from "@emotion/react";
 import { ChangeEvent, useEffect, useState } from "react";
+
+const vehicleComposeStyles = css`
+  display: flex;
+  align-items: flex-end;
+`;
 
 export default function ComposeVehicle() {
   const [placa, setPlaca] = useState<undefined | string>();
@@ -29,7 +35,7 @@ export default function ComposeVehicle() {
   }, [onDataSubmit]);
 
   return (
-    <Form onSubmit={handleSubmit} className="vehicles__compose">
+    <Form onSubmit={handleSubmit} css={vehicleComposeStyles}>
       <FormField>
         <label htmlFor="placa">Placa</label>
         <input

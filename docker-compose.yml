@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   frontend:
@@ -14,4 +14,4 @@ services:
       context: ./apps/fuel_app_backend
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - 8000:8000

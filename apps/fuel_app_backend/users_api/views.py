@@ -2,12 +2,10 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.request import Request
 
-from rest_framework.decorators import api_view
-
 from django.contrib.auth import get_user_model, login
 from rest_framework.views import APIView
 from fuel_app_backend.constants import ADMIN_ROLE, CONDUCTOR_ROLE, SUPERVISOR_ROLE
-from users_api.serializers import UserLoginSerializer, UserModelSerializer
+from users_api.serializers import UserLoginSerializer
 
 
 # Create your views here.
@@ -20,15 +18,18 @@ class LoginApiView(APIView):
 
         login(request, user)
 
+        user_data = get_user_model().objects.filter(
+            document=request.data.get("document")).values()[0]
+
         data = {
-            "user": UserModelSerializer(user).data,
+            "user": user_data,
             "token": token
         }
 
         return Response(data=data, status=status.HTTP_202_ACCEPTED)
 
 
-class UserView(APIView):
+class UsersView(APIView):
     def get(self, request: Request):
         role = request.query_params.get("role", CONDUCTOR_ROLE)
         role = role[0].upper() + f"{role.split(role[0])[1]}"
@@ -53,3 +54,12 @@ class UserView(APIView):
 
         users = get_user_model().objects.filter(**filters)
         return Response(data=users.values(), status=status.HTTP_200_OK)
+
+
+class UserProfileView(APIView):
+    def get(self, request: Request, *args, **kwargs):
+        user_id = kwargs.get("id")
+
+        user = get_user_model().objects.filter("id", user_id).values()
+
+        return Response(data=user, status=status.HTTP_200_OK)

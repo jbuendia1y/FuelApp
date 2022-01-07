@@ -1,11 +1,11 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "91f0273a87a43c4d105e23fb980811e185f29804076fefc3fd20be551d4fbdeb"
+            "sha256": "1fde46444f78bab3c00fdf11ea9ae7041b65b0e9949f7c4a04b7026abfdd7d7e"
         },
         "pipfile-spec": 6,
         "requires": {
-            "python_version": "3.8"
+            "python_version": ">=3.8"
         },
         "sources": [
             {
@@ -39,6 +39,14 @@
             ],
             "index": "pypi",
             "version": "==3.10.1"
+        },
+        "django-extensions": {
+            "hashes": [
+                "sha256:28e1e1bf49f0e00307ba574d645b0af3564c981a6dfc87209d48cb98f77d0b1a",
+                "sha256:9238b9e016bb0009d621e05cf56ea8ce5cce9b32e91ad2026996a7377ca28069"
+            ],
+            "index": "pypi",
+            "version": "==3.1.5"
         },
         "djangorestframework": {
             "hashes": [
@@ -81,7 +89,7 @@
                 "sha256:eed2afaa97ec33b4411995be12f8bdb95c87984eaa28d76cf628970c8a2d689a",
                 "sha256:fc7a7d7b0ed72589fd8b8486b9b42a564f10b8762be8bd4d9df94b807af4a089"
             ],
-            "markers": "python_version < '3.10' and platform_machine != 'aarch64' and platform_machine != 'arm64'",
+            "markers": "python_version >= '3.10'",
             "version": "==1.21.5"
         },
         "pandas": {

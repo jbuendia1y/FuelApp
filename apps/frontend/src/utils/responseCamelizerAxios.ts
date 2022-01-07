@@ -3,6 +3,7 @@ import camelCaseKeys from "camelcase-keys";
 import { decamelizeKeys } from "humps";
 const responseCamelizerAxios = axios.create();
 
+// SnakeCase -> CamelCase
 responseCamelizerAxios.interceptors.response.use(
   function (response) {
     return {
@@ -15,6 +16,7 @@ responseCamelizerAxios.interceptors.response.use(
   }
 );
 
+// CamelCase -> SnakeCase
 responseCamelizerAxios.interceptors.request.use(function (request) {
   if (
     !!request.data === false &&
@@ -23,7 +25,9 @@ responseCamelizerAxios.interceptors.request.use(function (request) {
     return request;
 
   if (!!request.params) {
-    request.params = decamelizeKeys(request.params);
+    request.params = decamelizeKeys(request.params,{
+      separator : "_"
+    });
   }
   request.data = decamelizeKeys(request.data, {
     separator: "_",

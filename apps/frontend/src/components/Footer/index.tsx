@@ -1,30 +1,46 @@
-import "./footer.scss";
+import { css } from "@emotion/react";
+import Container from "../Container";
+import { colors } from "@/constants";
+
+const footerStyles = css`
+  background-color: ${colors.secondary};
+  padding: 15px 0;
+`;
+
+const footerTitleStyles = css`
+  margin: 0;
+`;
+
+const footerListStyles = css`
+  padding-left: 0;
+  margin: 0;
+  list-style: none;
+
+  li > a {
+    text-decoration: none;
+    color: inherit;
+  }
+`;
 
 export default function Footer() {
   return (
-    <footer className="footer">
-      <div className="container footer-box">
+    <footer css={footerStyles}>
+      <Container>
         <div>
-          <h2 className="footer__title">Lorem</h2>
-          <ul className="footer__list">
-            <li className="footer__item">
-              <a href="#" className="footer__link">
-                Lorem
-              </a>
+          <h2 css={footerTitleStyles}>Lorem</h2>
+          <ul css={footerListStyles}>
+            <li>
+              <a href="#">Lorem</a>
             </li>
             <li>
-              <a href="#" className="footer__link">
-                Lorem
-              </a>
+              <a href="#">Lorem</a>
             </li>
             <li>
-              <a href="#" className="footer__link">
-                Lorem
-              </a>
+              <a href="#">Lorem</a>
             </li>
           </ul>
         </div>
-      </div>
+      </Container>
     </footer>
   );
 }

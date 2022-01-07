@@ -1,10 +1,22 @@
-import "./fuel-form-compose.scss";
-
 import Button from "@/components/Button";
-import Form, { FormField } from "@/components/Form";
+import Form, { FormField, SymbolPrice } from "@/components/Form";
 import FuelFormRepository from "@/repositories/FuelFormRepository";
 import { ChangeEvent, useEffect, useState } from "react";
 import useVehicles from "@/Vehicles/hooks/useVehicles";
+import { css } from "@emotion/react";
+
+const fuelFormBoxStyles = css`
+  display: grid;
+  max-width: 360px;
+  margin: 0 auto;
+  align-items: center;
+
+  min-height: 90vh;
+`;
+
+const fuelFormButtonStyles = css`
+  width: 100%;
+`;
 
 export default function FuelFormCompose() {
   const [hourMeter, setHourmeter] = useState<undefined | number>();
@@ -55,9 +67,9 @@ export default function FuelFormCompose() {
   }, [onDataSubmit]);
 
   return (
-    <div className="fuel-form-box">
-      <Form className="fuel-form" onSubmit={handleSubmit}>
-        <FormField className="form-field">
+    <div css={fuelFormBoxStyles}>
+      <Form onSubmit={handleSubmit}>
+        <FormField>
           <label htmlFor="vehicleId">Vehículo</label>
           <select required={true} name="vehicleId" id="vehicleId">
             <option>...</option>
@@ -70,7 +82,7 @@ export default function FuelFormCompose() {
             })}
           </select>
         </FormField>
-        <FormField className="form-field">
+        <FormField>
           <label htmlFor="hourMeter">Horometro</label>
           <input
             type="number"
@@ -92,9 +104,9 @@ export default function FuelFormCompose() {
             id="gallons"
           />
         </FormField>
-        <FormField className="form-field">
+        <FormField>
           <label htmlFor="pricePerGallon">Precio por Galón</label>
-          <span className="price">
+          <SymbolPrice>
             <input
               type="number"
               required={true}
@@ -102,11 +114,10 @@ export default function FuelFormCompose() {
               onChange={handleChange}
               name="pricePerGallon"
               id="pricePerGallon"
-              className="price"
             />
-          </span>
+          </SymbolPrice>
         </FormField>
-        <Button className="fuel-form__button" type="submit">
+        <Button css={fuelFormButtonStyles} type="submit">
           Enviar
         </Button>
       </Form>

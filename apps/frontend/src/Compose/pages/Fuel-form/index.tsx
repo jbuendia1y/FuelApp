@@ -1,7 +1,5 @@
-import "./fuel-form.scss";
-
 import Button from "@/components/Button";
-import Form, { FormField } from "@/components/Form";
+import Form, { FormField, SymbolPrice } from "@/components/Form";
 import FuelFormRepository from "@/repositories/FuelFormRepository";
 import { ChangeEvent, useEffect, useState } from "react";
 import useVehicles from "@/Vehicles/hooks/useVehicles";
@@ -94,7 +92,7 @@ export default function FuelForm() {
         </FormField>
         <FormField className="form-field">
           <label htmlFor="pricePerGallon">Precio por Galón</label>
-          <span className="price">
+          <SymbolPrice>
             <input
               type="number"
               required={true}
@@ -102,9 +100,8 @@ export default function FuelForm() {
               onChange={handleChange}
               name="pricePerGallon"
               id="pricePerGallon"
-              className="price"
             />
-          </span>
+          </SymbolPrice>
         </FormField>
         <Button className="fuel-form__button" type="submit">
           Enviar
