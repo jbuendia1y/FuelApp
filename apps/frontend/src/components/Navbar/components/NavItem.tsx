@@ -1,11 +1,37 @@
-import "./navItem.scss";
-import Button from "@/components/Button";
 import { Link } from "react-router-dom";
+import { css } from "@emotion/react";
 
 interface NavItemProps {
   children?: any;
   href?: string;
 }
+
+const navItemStyled = css`
+  button.nav__link {
+    background-color: inherit;
+    border-radius: 0;
+    box-shadow: none;
+
+    &:active {
+      transform: none;
+    }
+
+    &:hover {
+      filter: none;
+    }
+  }
+`;
+
+const navLink = css`
+  color: inherit;
+  text-decoration: none;
+
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 15px;
+
+  width: 100%;
+`;
 
 export default function NavItem({
   children,
@@ -13,9 +39,9 @@ export default function NavItem({
   ...rest
 }: NavItemProps | any) {
   return (
-    <li className="nav__item">
+    <li css={navItemStyled}>
       {href ? (
-        <Link className="nav__link" to={href} {...rest}>
+        <Link css={navLink} to={href} {...rest}>
           {children}
         </Link>
       ) : (

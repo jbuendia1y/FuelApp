@@ -19,5 +19,7 @@ RUN pipenv install
 # COPY ALL FILES
 COPY . .
 
-CMD ["pipenv","run","dev"]
+# PORT EXPOSE
+EXPOSE 8000
 
+CMD ["pipenv","run","dev"]

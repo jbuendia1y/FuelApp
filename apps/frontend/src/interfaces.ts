@@ -1,29 +1,35 @@
-import { Roles } from "@/constants";
+import { Roles, TypeId } from "@/constants";
 
 export interface IVehicleForm {
   placa: string;
 }
 
 export interface IVehicle extends IVehicleForm {
-  id: number;
+  id: TypeId;
 }
 
 export interface IFuelFormForm {
-  hourmeter: number;
+  hourMeter: number;
   gallons: number;
   pricePerGallon: number;
 
-  vehicleId: number;
+  vehicleId: TypeId;
 }
 
 export interface IFuelForm extends IFuelFormForm {
+  id: TypeId;
   fullPayment: number;
   kmTraveled: number;
   kmPerGallon: number;
   payPerKm: number;
   createdAt: string;
 
-  userId: number;
+  userId: TypeId;
+}
+
+export interface IFuelFormPopulate extends IFuelForm {
+  user: IUser;
+  vehicle: IVehicle;
 }
 
 export interface IUserRegister {
@@ -34,7 +40,7 @@ export interface IUserRegister {
 }
 
 export interface IUser {
-  id: number;
+  id: TypeId;
   avatar: string;
 
   document: string;

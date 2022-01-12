@@ -1,13 +1,11 @@
-import "./fuel-form.scss";
-
 import Button from "@/components/Button";
-import Form, { FormField } from "@/components/Form";
+import Form, { FormField, SymbolPrice } from "@/components/Form";
 import FuelFormRepository from "@/repositories/FuelFormRepository";
 import { ChangeEvent, useEffect, useState } from "react";
 import useVehicles from "@/Vehicles/hooks/useVehicles";
 
 export default function FuelForm() {
-  const [hourmeter, setHourmeter] = useState<undefined | number>();
+  const [hourMeter, setHourmeter] = useState<undefined | number>();
   const [gallons, setGallons] = useState<undefined | number>();
   const [pricePerGallon, setPricePerGallon] = useState<undefined | number>();
   const [vehicleId, setVehicleId] = useState<undefined | number>();
@@ -34,17 +32,17 @@ export default function FuelForm() {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    if (!gallons || !hourmeter || !pricePerGallon || !vehicleId) return;
+    if (!gallons || !hourMeter || !pricePerGallon || !vehicleId) return;
     setOnDataSubmit(true);
   };
 
   useEffect(() => {
     if (!onDataSubmit) return;
-    if (!gallons || !hourmeter || !pricePerGallon || !vehicleId) return;
+    if (!gallons || !hourMeter || !pricePerGallon || !vehicleId) return;
 
     FuelFormRepository.create({
       gallons,
-      hourmeter,
+      hourMeter,
       pricePerGallon,
       vehicleId,
     })
@@ -71,14 +69,14 @@ export default function FuelForm() {
           </select>
         </FormField>
         <FormField className="form-field">
-          <label htmlFor="hourmeter">Horometro</label>
+          <label htmlFor="hourMeter">Horometro</label>
           <input
             type="number"
             required={true}
             step={0.001}
             onChange={handleChange}
-            name="hourmeter"
-            id="hourmeter"
+            name="hourMeter"
+            id="hourMeter"
           />
         </FormField>
         <FormField className="form-field">
@@ -94,7 +92,7 @@ export default function FuelForm() {
         </FormField>
         <FormField className="form-field">
           <label htmlFor="pricePerGallon">Precio por Galón</label>
-          <span className="price">
+          <SymbolPrice>
             <input
               type="number"
               required={true}
@@ -102,9 +100,8 @@ export default function FuelForm() {
               onChange={handleChange}
               name="pricePerGallon"
               id="pricePerGallon"
-              className="price"
             />
-          </span>
+          </SymbolPrice>
         </FormField>
         <Button className="fuel-form__button" type="submit">
           Enviar

@@ -1,13 +1,41 @@
 from django.contrib.auth.models import AnonymousUser
+from django.contrib.auth import get_user_model
 
 from rest_framework.views import APIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework import status
 
-from fuel_forms_api.models import FuelForm
+from fuel_forms_api.models import FuelForm, populate_fuel_form
 from fuel_forms_api import serializers
 # Create your views here.
+
+
+def compute_filters(user_id: int, vehicle_id: int):
+    filters = {}
+    if user_id:
+        filters = {
+            **filters,
+            "user_id": user_id
+        }
+    if vehicle_id:
+        filters = {
+            **filters,
+            "vehicle_id": vehicle_id
+        }
+
+    return filters
+
+
+class FuelFormView(APIView):
+    serializer_class = serializers.FuelFormSerializer
+
+    def get(self, request: Request, *args, **kwargs):
+        id = kwargs.get('id')
+
+        data = populate_fuel_form(id)
+
+        return Response(data=data, status=status.HTTP_200_OK)
 
 
 class FuelFormsView(APIView):
@@ -17,17 +45,7 @@ class FuelFormsView(APIView):
         vehicle_id = request.query_params.get("vehicle_id", None)
         user_id = request.query_params.get("user_id", None)
 
-        filters = {}
-        if user_id:
-            filters = {
-                **filters,
-                "user_id": user_id
-            }
-        if vehicle_id:
-            filters = {
-                **filters,
-                "vehicle_id": vehicle_id
-            }
+        filters = compute_filters(user_id, vehicle_id)
 
         data = FuelForm.objects.filter(**filters)
 

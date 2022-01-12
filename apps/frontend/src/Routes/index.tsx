@@ -1,11 +1,11 @@
 import useAuth from "@/Auth/hooks/useAuth";
+import { FUEL_FORMS_ROOT_PATH } from "@/FuelForms";
 import { lazy, Suspense } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Loading from "../components/Loading";
 import ProtectedRoute from "./protectedRoute";
 
 const Auth = lazy(() => import("@/Auth"));
-const Compose = lazy(() => import("@/Compose"));
 const Profile = lazy(() => import("@/Profile"));
 const Vehicles = lazy(() => import("@/Vehicles"));
 const FuelForms = lazy(() => import("@/FuelForms"));
@@ -22,16 +22,8 @@ export default function Routes() {
         </Route>
 
         <Route path={"/login"} exact>
-          {!!user ? <Redirect to={"/compose/fuel-form"} /> : <Auth />}
+          <Auth />
         </Route>
-
-        <ProtectedRoute path="/compose/*" isAuth={user}>
-          <Compose />
-        </ProtectedRoute>
-
-        {/*         <ProtectedRoute path="/historic" isAuth={user} exact>
-          <Historic />
-        </ProtectedRoute> */}
 
         <ProtectedRoute path="/profile" isAuth={user} exact>
           <Profile />
@@ -41,19 +33,9 @@ export default function Routes() {
           <Vehicles />
         </ProtectedRoute>
 
-        <ProtectedRoute path="/fuel-forms" isAuth={user} exact>
+        <ProtectedRoute path={FUEL_FORMS_ROOT_PATH} isAuth={user}>
           <FuelForms />
         </ProtectedRoute>
-
-        {/*         {process.env.NODE_ENV === "development" && (
-          <ProtectedRoute path="/develop" isAuth={user} exact>
-            <Develop />
-          </ProtectedRoute>
-        )} */}
-
-        {/*         <ProtectedRoute path={["/requests/access"]} isAuth={user} exact>
-          <Requests />
-        </ProtectedRoute> */}
 
         <Route path="*">
           <PageNotFound />

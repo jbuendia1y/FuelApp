@@ -1,8 +1,8 @@
-import { Roles } from "@/constants";
+import { Roles, TypeId } from "@/constants";
 import { IUser } from "@/interfaces";
 
 export default class User implements IUser {
-  id: number;
+  id: TypeId;
   avatar: string;
 
   document: string;

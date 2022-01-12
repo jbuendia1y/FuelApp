@@ -8,7 +8,7 @@ export default function PageNotFound() {
         placeContent: "center",
       }}
     >
-      <h1 style={{ fontSize: "3.5em", marginBottom: "0" }}>404 Page</h1>
+      <h1 style={{ fontSize: "3.5em", marginBottom: "0" }}>404</h1>
       <p style={{ fontSize: "20px", marginTop: "0" }}>Page cannot found</p>
     </div>
   );

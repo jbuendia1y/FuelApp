@@ -1,35 +1,30 @@
-import dateTimeFormat from "@/utils/dateTimeFormat";
-import useFuelForms from "./hooks/useFuelForms";
+import { Switch, Route } from "react-router-dom";
+import { lazy } from "react";
+
+export const FUEL_FORMS_ROOT_PATH = "/fuel-forms";
+
+const FuelFormsPage = lazy(() => import("./pages/FuelForms"));
+const FuelFormCompose = lazy(() => import("./pages/FuelFormCompose"));
+const FuelFormPopulate = lazy(() => import("./pages/FuelForm"));
 
 export default function FuelForms() {
-  const { fuelForms } = useFuelForms();
-
   return (
-    <div>
-      {fuelForms?.map((fuelForm) => {
-        return (
-          <div>
-            <p>
-              Horómetro: <span>{fuelForm.hourmeter}</span>
-            </p>
-            <p>
-              KM X Galón : <span>{fuelForm.kmPerGallon} km</span>
-            </p>
-            <p>
-              Recorrió : <span>{fuelForm.kmTraveled} km</span>
-            </p>
-            <p>
-              Precio X KM : S/<span>{fuelForm.payPerKm}</span>
-            </p>
-            <p>
-              Total : S/<span>{fuelForm.fullPayment}</span>
-            </p>
-            <p>
-              Registrado el : <span>{dateTimeFormat(fuelForm.createdAt)}</span>
-            </p>
-          </div>
-        );
-      })}
-    </div>
+    <Switch>
+      <Route path={FUEL_FORMS_ROOT_PATH} exact>
+        <FuelFormsPage />
+      </Route>
+      <Route path={FUEL_FORMS_ROOT_PATH + "/compose"} exact>
+        <FuelFormCompose />
+      </Route>
+      <Route
+        path={`${FUEL_FORMS_ROOT_PATH}/:id`}
+        render={(props) => {
+          return (
+            <FuelFormPopulate id={props.match.params.id}></FuelFormPopulate>
+          );
+        }}
+        exact
+      ></Route>
+    </Switch>
   );
 }

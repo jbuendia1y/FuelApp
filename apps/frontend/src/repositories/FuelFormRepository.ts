@@ -34,6 +34,17 @@ class FuelFormRepository extends BaseRepository<IFuelForm, IFuelFormForm> {
         .catch((err) => reject(err.message));
     });
   }
+
+  fetchOne(id: string): Promise<IFuelForm> {
+    return new Promise((resolve, reject) => {
+      responseCamelizerAxios
+        .get(this.BASE_URL + id)
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((err) => reject(err.message));
+    });
+  }
 }
 
 export default new FuelFormRepository();

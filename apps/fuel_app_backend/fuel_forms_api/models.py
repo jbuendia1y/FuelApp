@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 
 from users_api.models import UserProfile
@@ -30,3 +31,19 @@ class FuelForm(models.Model):
     km_per_gallon = models.FloatField()
     pay_per_km = models.FloatField()
     created_at = models.DateTimeField()
+
+
+def populate_fuel_form(id: int):
+    fuel_form = FuelForm.objects.filter(id=id).values()[0]
+    vehicle = Vehicle.objects.filter(
+        id=fuel_form.get("vehicle_id")
+    ).values()[0]
+    user = get_user_model().objects.filter(
+        id=fuel_form.get("user_id")
+    ).values()[0]
+
+    return {
+        **fuel_form,
+        "vehicle": {**vehicle},
+        "user": {**user}
+    }
