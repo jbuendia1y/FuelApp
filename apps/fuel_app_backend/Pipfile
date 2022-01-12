@@ -4,21 +4,22 @@ verify_ssl = true
 name = "pypi"
 
 [scripts]
-dev = "python manage.py runserver"
-makemigrations = "python manage.py makemigrations"
-migrate = "python manage.py migrate"
-create_superuser = "python manage.py createsuperuser"
-changepassword = "python manage.py changepassword"
-init_data = "bash ./scripts/init_data.sh"
+start = "uvicorn main:app"
+dev = "uvicorn main:app --reload"
+init_data = "python scripts.py"
 
 [packages]
-django = "==3.2.9"
-djangorestframework = "==3.12.4"
-django-cors-headers = "*"
 pandas = "*"
+fastapi = "*"
+uvicorn = {extras = ["standard"], version = "*"}
+sqlalchemy = "*"
+bcrypt = "*"
+openpyxl = "*"
+python-jose = "*"
+python-multipart = "*"
 
 [dev-packages]
 autopep8 = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "*"
