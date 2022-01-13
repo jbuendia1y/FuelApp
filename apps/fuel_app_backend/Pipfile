@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [scripts]
-start = "uvicorn main:app"
+start = "uvicorn main:app --host 0.0.0.0 --port 8800"
 dev = "uvicorn main:app --reload"
 init_data = "python scripts.py"
 

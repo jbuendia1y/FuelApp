@@ -1,16 +1,19 @@
+from datetime import timedelta
 from typing import List
 from fastapi import FastAPI
 from fastapi.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.params import Depends
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
+from schemas import Token
 from own_dependencies import get_db, get_current_active_user
-from utils import password
+from utils import token
 
 import crud
-import models
 import schemas
 import computes
+import authenticate
+import environment
 
 app = FastAPI()
 
@@ -32,33 +35,32 @@ app.add_middleware(
 # Auth
 
 
-@app.post("/token", response_model=schemas.User)
+@app.post("/token", response_model=schemas.Token)
 def login(credentials: OAuth2PasswordRequestForm = Depends(), db=Depends(get_db)):
     c_document = credentials.username
     c_password = credentials.password
 
-    user: models.User = crud.get_user_by_document(db, c_document)
-    if user == None:
+    try:
+        user = authenticate.authenticate_user(db, c_document, c_password)
+    except ValueError:
         raise HTTPException(403, "Invalid credentials")
 
-    is_equal = password.compare_password(c_password, user.password)
-    if is_equal == None:
-        raise HTTPException(403, "Invalid credentials")
+    access_token_expires = timedelta(minutes=environment.JWT_MINUTES_EXPIRES)
+    access_token = token.generate_token({
+        "document": user.document
+    }, access_token_expires)
 
-    return user
+    return Token(access_token=access_token, token_type="bearer")
 
 
-@app.post("/login", response_model=schemas.UserBase)
-def auth_login(credentials: OAuth2PasswordRequestForm = Depends(), db=Depends(get_db)):
-    c_document = credentials.username
+@app.post("/login", response_model=schemas.User)
+def auth_login(credentials: schemas.Credentials, db=Depends(get_db)):
+    c_document = credentials.document
     c_password = credentials.password
 
-    user: models.User = crud.get_user_by_document(db, c_document)
-    if user == None:
-        raise HTTPException(403, "Invalid credentials")
-
-    is_equal = password.compare_password(c_password, user.password)
-    if is_equal == None:
+    try:
+        user = authenticate.authenticate_user(db, c_document, c_password)
+    except ValueError:
         raise HTTPException(403, "Invalid credentials")
 
     return user

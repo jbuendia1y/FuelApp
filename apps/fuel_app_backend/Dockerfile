@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7
 
 # SET WORKSPACE
 WORKDIR /app
@@ -22,4 +22,4 @@ COPY . .
 # PORT EXPOSE
 EXPOSE 8000
 
-CMD ["pipenv","run","dev"]
+CMD ["pipenv","run","start"]

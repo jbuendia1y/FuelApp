@@ -116,9 +116,4 @@ def init_data():
 
 
 if __name__ == "__main__":
-    # init_data()
-    token = generate_token({
-        "document": "76510043",
-    })
-
-    decode_token(token)
+    init_data()
