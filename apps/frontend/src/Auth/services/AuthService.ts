@@ -3,13 +3,18 @@ import { IUser } from "@/interfaces";
 import setOrDeleteFromStorage from "@/utils/handleStorage";
 import responseCamelizerAxios from "@/utils/responseCamelizerAxios";
 
-interface ResponseLoginPoint {
+interface IResponseToken {
+  accessToken:string;
+  tokenType:string;
+}
+
+interface IResponseLogin {
   user: IUser;
-  token: string;
+  token:string;
 }
 
 class AuthService {
-  private readonly BASE_URL = environment.SERVER_BASE_URL + "/users";
+  private readonly BASE_URL = environment.SERVER_BASE_URL ;
 
   constructor() {
     const _user = localStorage.getItem(environment.USER_FIELD_NAME);
@@ -41,21 +46,40 @@ class AuthService {
     return JSON.parse(userString);
   }
 
+  public requestToken(document:string,password:string):Promise<IResponseToken>{
+    return new Promise((resolve,reject)=>{
+      responseCamelizerAxios.post<IResponseToken>(this.BASE_URL + "/token/",{
+        document,
+        password,
+      }).then(res => {
+        const data = res.data
+        resolve(data)
+      }).catch(err =>{
+        reject(new Error(err.message))
+      })
+    })
+  }
+
   public login(
     document: string,
     password: string
-  ): Promise<ResponseLoginPoint> {
+  ): Promise<IResponseLogin> {
     return new Promise((resolve, reject) => {
       responseCamelizerAxios
-        .post<ResponseLoginPoint>(this.BASE_URL + "/login/", {
+        .post<IUser>(this.BASE_URL + "/login/", {
           document,
           password,
         })
-        .then((res) => {
-          const data = res.data;
-          this._token = data.token;
-          this.saveUser(data.user);
-          resolve(data);
+        .then(async (res) => {
+          const user = res.data;
+
+          this.saveUser(user);
+          const token = await this.requestToken(document,password)
+          
+          resolve({
+            user,
+            token: token.accessToken
+          });
         })
         .catch((err) => {
           reject(new Error(err.message));
@@ -76,8 +100,6 @@ class AuthService {
     this.deleteTokenSaved();
     this.deleteUserSaved();
   }
-
-  // public onAuthChange() {}
 }
 
 export default new AuthService();
