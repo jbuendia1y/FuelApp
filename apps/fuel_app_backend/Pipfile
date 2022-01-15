@@ -17,6 +17,7 @@ bcrypt = "*"
 openpyxl = "*"
 python-jose = "*"
 python-multipart = "*"
+dropbox = "*"
 
 [dev-packages]
 autopep8 = "*"
