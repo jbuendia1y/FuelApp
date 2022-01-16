@@ -10,6 +10,10 @@ class User(Base):
     __tablename__ = constants.USERS_TABLE_NAME
 
     id = Column(Integer, primary_key=True, index=True)
+
+    first_name = Column(String)
+    last_name = Column(String)
+
     document = Column(String, unique=True, index=True)
     password = Column(String)
 

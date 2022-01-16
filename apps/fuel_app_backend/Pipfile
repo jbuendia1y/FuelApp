@@ -7,6 +7,7 @@ name = "pypi"
 start = "uvicorn main:app --host 0.0.0.0 --port 8800"
 dev = "uvicorn main:app --reload"
 init_data = "python scripts.py"
+sample = "python sample.py"
 
 [packages]
 pandas = "*"
@@ -17,6 +18,8 @@ bcrypt = "*"
 openpyxl = "*"
 python-jose = "*"
 python-multipart = "*"
+dropbox = "*"
+pymysql = "*"
 
 [dev-packages]
 autopep8 = "*"

@@ -14,6 +14,8 @@ class UserBase(BaseModel):
 
 
 class UserCreate(UserBase):
+    first_name: str
+    last_name: str
     password: str
 
     avatar: str = "https://i.picsum.photos/id/11/300/300.jpg?hmac=CziSEzrosHahJDUqPHiKx6cnAZh9zlU1VM2T52T5an8"
@@ -28,13 +30,15 @@ class User(UserCreate):
     class Config:
         orm_mode = True
 
+
 class Token(BaseModel):
-    access_token : str
-    token_type : str
+    access_token: str
+    token_type: str
 
 
 class TokenData(Token):
     document: Optional[str] = None
+
 
 class VehicleBase(BaseModel):
     placa: str
