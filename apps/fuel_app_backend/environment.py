@@ -10,4 +10,8 @@ JWT_MINUTES_EXPIRES = int(os.environ.get("JWT_MINUTES_EXPIRES", "15"))
 DROPBOX_API_KEY = os.environ.get("DROPBOX_API_KEY")
 DROPBOX_API_FOLDER = os.environ.get(
     "DROPBOX_API_FOLDER", "Fuel App Data Folder")
+
 ENTERPRISE_NAME = os.environ.get("ENTERPRISE_NAME")
+DEFAULT_PASSWORD = os.environ.get("DEFAULT_PASSWORD")
+
+FORMS_FOLDER_NAME = os.environ.get("FORMS_FOLDER_NAME", "formularios")

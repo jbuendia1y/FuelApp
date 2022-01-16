@@ -1,5 +1,5 @@
 # Business local files
-data/*.xlsx
+data/**/*.xlsx
 sql_app.db
 
 # Byte-compiled / optimized / DLL files
