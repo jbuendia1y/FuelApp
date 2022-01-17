@@ -21,6 +21,7 @@ origins = [
     "http://localhost:3000",
     "http://localhost:4200",
     "http://localhost:4000",
+    environment.FRONTEND_APP_URL,
 ]
 
 app.add_middleware(
