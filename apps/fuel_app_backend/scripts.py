@@ -139,18 +139,25 @@ def save_vehicles(data_files: list):
 
 def load_data_from_data_folder(user_admin_id: int, data_files: list):
     print("Loading vehicles")
-    save_vehicles(data_files)
-    print("Vehicles loaded")
+
+    if len(crud.get_vehicles(db)) == 0:
+        save_vehicles(data_files)
+        print("Vehicles loaded")
+    else:
+        print("VEHICLES ALREADY EXIST IN DB")
+
     print("Loading fuel forms")
-    save_fuel_forms(user_admin_id, data_files)
-    print("Fuel forms loaded")
+    if len(crud.get_fuel_forms(db)) == 0:
+        save_fuel_forms(user_admin_id, data_files)
+        print("Fuel forms loaded")
+    else:
+        print("FUEL FORMS ALREADY EXIST IN DB")
 
 
 def init_data():
     data_files = list_forms_data_files()
 
     print("Loading data ...")
-    models.Base.metadata.create_all(engine)
     print("Getting user admin")
     if db.query(models.User).count() == 0:
         user_admin_id = crud.create_user(db, schemas.UserCreate(
@@ -171,6 +178,18 @@ def init_data():
     print("Data loaded!")
 
 
-if __name__ == "__main__":
-    init_download()
+def main():
+    models.Base.metadata.create_all(engine)
+
+    try:
+        init_download()
+    except ValueError as e:
+        print(e.args[0])
+        return
+
     init_data()
+
+
+if __name__ == "__main__":
+    main()
+    db.close()
