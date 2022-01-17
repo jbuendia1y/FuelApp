@@ -44,6 +44,9 @@ def download_excel_files():
 
 
 def init_download():
+    if environment.DROPBOX_API_KEY == None:
+        raise ValueError("DROPBOX_API_KEY NOT EXIST")
+
     if len(list_main_data_files()) == 0:
         download_excel_files()
     else:

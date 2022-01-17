@@ -1,4 +1,4 @@
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7
+FROM python:3.10.1-alpine
 
 # SET WORKSPACE
 WORKDIR /app
@@ -19,7 +19,7 @@ RUN pipenv install
 # COPY ALL FILES
 COPY . .
 
-# PORT EXPOSE
-EXPOSE 8000
+# INIT DATA
+RUN pipenv run init_data
 
 CMD ["pipenv","run","start"]
