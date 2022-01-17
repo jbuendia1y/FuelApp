@@ -18,6 +18,7 @@ openpyxl = "*"
 python-jose = "*"
 python-multipart = "*"
 dropbox = "*"
+psycopg2 = "*"
 
 [dev-packages]
 autopep8 = "*"

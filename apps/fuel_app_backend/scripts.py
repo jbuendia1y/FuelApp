@@ -171,7 +171,11 @@ def init_data():
         user_admin_id = db.query(models.User).filter(
             models.User.role == ADMIN_ROLE).first().id
 
-    save_conductores()
+    if db.query(models.User).filter(models.User.role == CONDUCTOR_ROLE).count() == 0:
+        save_conductores()
+    else:
+        print("CONDUCTORES ALREADY EXIST IN DB")
+
     if len(data_files) != 0:
         load_data_from_data_folder(user_admin_id, data_files)
 
