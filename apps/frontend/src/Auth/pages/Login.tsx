@@ -4,6 +4,7 @@ import { colors } from "@/constants";
 
 import { useHistory } from "react-router-dom";
 import useAuth from "@/Auth/hooks/useAuth";
+import { environment } from "@/environments/environment";
 
 export default function Login() {
   const history = useHistory();
@@ -15,7 +16,7 @@ export default function Login() {
         validate={(data: { document: string; password: string }) => {
           login(data.document, data.password)
             .then(() => {
-              history.push("/compose/fuel-form");
+              history.push("/fuel-forms/compose");
             })
             .catch((err) => console.log(err.message));
         }}

@@ -1,5 +1,6 @@
 import { environment } from "@/environments/environment";
 import { IUser } from "@/interfaces";
+import qs from "qs"
 import setOrDeleteFromStorage from "@/utils/handleStorage";
 import responseCamelizerAxios from "@/utils/responseCamelizerAxios";
 
@@ -48,10 +49,16 @@ class AuthService {
 
   public requestToken(document:string,password:string):Promise<IResponseToken>{
     return new Promise((resolve,reject)=>{
-      responseCamelizerAxios.post<IResponseToken>(this.BASE_URL + "/token/",{
+
+      const data = qs.stringify({
         username : document,
         password,
-      }).then(res => {
+      })
+
+      responseCamelizerAxios.post<IResponseToken>(this.BASE_URL + "/token",data,{
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      })
+      .then(res => {
         const data = res.data
         resolve(data)
       }).catch(err =>{
