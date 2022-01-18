@@ -49,7 +49,7 @@ class AuthService {
   public requestToken(document:string,password:string):Promise<IResponseToken>{
     return new Promise((resolve,reject)=>{
       responseCamelizerAxios.post<IResponseToken>(this.BASE_URL + "/token/",{
-        document,
+        username : document,
         password,
       }).then(res => {
         const data = res.data
