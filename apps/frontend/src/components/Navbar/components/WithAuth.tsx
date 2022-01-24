@@ -1,12 +1,17 @@
 import useAuth from "@/Auth/hooks/useAuth";
-import Avatar from "@/components/Avatar";
-import Button from "@/components/Button";
-import LogoutIcon from "@/components/Icons/LogoutIcon";
-import { colors } from "@/constants";
-import { css } from "@emotion/react";
 import { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
-import NavItem from "./NavItem";
+import { Link, useHistory } from "react-router-dom";
+
+import {
+  Avatar,
+  Box,
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
+  Typography,
+} from "@mui/material";
+
+import { default as LogoutIcon } from "@mui/icons-material/Logout";
 
 export default function WithAuth() {
   const history = useHistory();
@@ -22,35 +27,35 @@ export default function WithAuth() {
     });
   }, [onLogout]);
 
+  if (user === undefined) return <></>;
+
   return (
     <>
-      <NavItem>
-        {user && (
-          <Avatar padding="10px" user={user}>
-            Ver perfil
-          </Avatar>
-        )}
-      </NavItem>
-      <NavItem>
-        <Button
-          onClick={() => {
-            setOnLogout(true);
-          }}
-          css={css`
-            background-color: ${colors.secondary};
-            box-shadow: none;
-            border-radius: 0;
-            width: 100%;
-            display: flex;
-            svg {
-              margin-right: 10px;
-              fill: ${colors.white};
-            }
-          `}
-        >
-          <LogoutIcon /> Cerrar Sessión
-        </Button>
-      </NavItem>
+      <Link to="/profile">
+        <MenuItem>
+          <ListItemIcon>
+            <Avatar alt={user.getFullName()} src={user.avatar} />
+          </ListItemIcon>
+          <Box ml={2}>
+            <Typography fontSize={15} variant="h2" component="p">
+              {user.getShortName()}
+            </Typography>
+            <Typography fontSize={12} variant="h3" component="p">
+              {user.document}
+            </Typography>
+          </Box>
+        </MenuItem>
+      </Link>
+      <MenuItem
+        onClick={() => {
+          setOnLogout(true);
+        }}
+      >
+        <ListItemIcon>
+          <LogoutIcon />
+        </ListItemIcon>
+        <ListItemText>Cerrar Sessión</ListItemText>
+      </MenuItem>
     </>
   );
 }

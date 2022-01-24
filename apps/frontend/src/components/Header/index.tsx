@@ -1,39 +1,34 @@
 import { css } from "@emotion/react";
-
 import ReactIcon from "@/components/Icons/ReactIcon";
 import Navbar from "../Navbar";
-import { colors } from "@/constants";
-import Container from "../Container";
-
-const headerStyles = css`
-  background-color: ${colors.secondary};
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 -2px 10px #00000069;
-  backdrop-filter: blur(2px);
-
-  -webkit-backdrop-filter: blur(2px);
-`;
-
-const headerBoxStyles = css`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-`;
+import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
+import { useHistory } from "react-router-dom";
+import { toUpperCaseFirstLetter } from "@/utils/stringFunctions";
 
 const headerLogoStyles = css`
   width: 40px;
 `;
 
 export default function Header() {
+  const { location } = useHistory();
+
+  console.log(location);
+
   return (
-    <header css={headerStyles}>
-      <Container css={headerBoxStyles}>
-        <ReactIcon css={headerLogoStyles} />
-        <Navbar />
-      </Container>
+    <header>
+      <AppBar position="sticky">
+        <Toolbar>
+          <IconButton>
+            <ReactIcon css={headerLogoStyles} />
+          </IconButton>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            {toUpperCaseFirstLetter(
+              location.pathname.split("/")[1].replaceAll("-", " ")
+            )}
+          </Typography>
+          <Navbar />
+        </Toolbar>
+      </AppBar>
     </header>
   );
 }

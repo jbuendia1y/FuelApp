@@ -60,6 +60,7 @@ class AuthService {
       })
       .then(res => {
         const data = res.data
+        this._token = data.accessToken
         resolve(data)
       }).catch(err =>{
         reject(new Error(err.message))

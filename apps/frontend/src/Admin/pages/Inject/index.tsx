@@ -3,7 +3,7 @@ import { useState } from "react";
 import ProgressBar from "@/components/ProgressBar";
 import useAuth from "@/Auth/hooks/useAuth";
 import useVehicles from "@/Vehicles/hooks/useVehicles";
-import FuelFormRepository from "@/repositories/FuelFormRepository";
+import FuelFormRepository from "@/FuelForms/repositories/FuelFormRepository";
 
 export default function Inject() {
   const [count, setCount] = useState(0);

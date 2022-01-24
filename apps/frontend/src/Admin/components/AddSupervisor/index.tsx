@@ -1,4 +1,4 @@
-import Button from "@/components/Button";
+import Button from "@mui/material/Button";
 import { FormField } from "@/components/Form";
 import { ChangeEvent, FormEvent, useState } from "react";
 
@@ -24,7 +24,7 @@ export default function AddSupervisor() {
       <form onSubmit={handleSubmit}>
         <FormField>
           <label>UserID</label>
-        <input type="text" onChange={handleChange} required={true} />
+          <input type="text" onChange={handleChange} required={true} />
         </FormField>
         <Button type="submit">Añadir Supervisor</Button>
       </form>

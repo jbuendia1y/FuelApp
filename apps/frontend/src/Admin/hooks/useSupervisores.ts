@@ -1,4 +1,4 @@
-import UserRepository from "@/repositories/UserRepository";
+import UserRepository from "@/Auth/repositories/UserRepository";
 import { useEffect, useState } from "react";
 
 export default function useSupervisores() {

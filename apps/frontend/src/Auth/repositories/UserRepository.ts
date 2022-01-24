@@ -2,7 +2,7 @@ import { Roles } from "@/constants";
 import { environment } from "@/environments/environment";
 import { IUser, IUserRegister } from "@/interfaces";
 import responseCamelizerAxios from "@/utils/responseCamelizerAxios";
-import BaseRepository from "./BaseRepository";
+import BaseRepository from "../../repositories/BaseRepository";
 
 interface UserParams {
   role: Roles;
@@ -33,6 +33,16 @@ class UserRepository extends BaseRepository<IUser, IUserRegister> {
         })
         .catch((err) => reject(err.message));
     });
+  }
+
+  fetchOne(id: number): Promise<IUser> {
+      return new Promise((resolve,reject)=>{
+        responseCamelizerAxios.get(this.BASE_URL + id).then(res => {
+          resolve(res.data)
+        }).catch(err =>{
+          reject(new Error(err.message))
+        })
+      })
   }
 }
 

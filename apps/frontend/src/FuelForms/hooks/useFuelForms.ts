@@ -1,5 +1,5 @@
 import { IFuelForm } from "@/interfaces";
-import FuelFormRepository from "@/repositories/FuelFormRepository";
+import FuelFormRepository from "@/FuelForms/repositories/FuelFormRepository";
 import { useEffect, useState } from "react";
 
 interface IUseFuelForms{
@@ -15,12 +15,18 @@ export default function useFuelForms({
 }:IUseFuelForms) {
   const [fuelForms, setFuelForms] = useState<undefined | IFuelForm[]>();
   const [loading, setLoading] = useState(false);
+  const [page,setPage] = useState(1)
+
+  const changePage = (value:number)=>{
+    setPage(value)
+  }
 
   useEffect(() => {
     setLoading(true);
     FuelFormRepository.fetchAll({
       vehicleId: params?.vehicleId,
       userId: params?.userId,
+      page
     }).then((res) => {
       if(reverse) setFuelForms(res.reverse())
       else setFuelForms(res);
@@ -28,5 +34,5 @@ export default function useFuelForms({
     });
   }, []);
 
-  return { fuelForms, loading };
+  return { fuelForms, loading,changePage,page };
 }

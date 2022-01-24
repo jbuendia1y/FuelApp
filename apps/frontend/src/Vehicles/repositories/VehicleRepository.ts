@@ -1,7 +1,8 @@
+import { TypeId } from "@/constants";
 import { environment } from "@/environments/environment";
 import { IVehicle, IVehicleForm } from "@/interfaces";
 import axios from "axios";
-import BaseRepository from "./BaseRepository";
+import BaseRepository from "../../repositories/BaseRepository";
 
 class VehicleRepository extends BaseRepository<IVehicle, IVehicleForm> {
   private readonly BASE_URL = environment.SERVER_BASE_URL + "/vehicles/";
@@ -16,7 +17,7 @@ class VehicleRepository extends BaseRepository<IVehicle, IVehicleForm> {
         .catch(reject);
     });
   }
-  public update(id: string, item: IVehicle): Promise<IVehicle> {
+  public update(id: TypeId, item: IVehicle): Promise<IVehicle> {
     return new Promise((resolve, reject) => {
       axios
         .put(this.BASE_URL + id, item)
@@ -38,7 +39,7 @@ class VehicleRepository extends BaseRepository<IVehicle, IVehicleForm> {
     });
   }
 
-  public fetchOne(id: string): Promise<IVehicle> {
+  public fetchOne(id: TypeId): Promise<IVehicle> {
     return new Promise((resolve, reject) => {
       axios
         .get(this.BASE_URL + id)

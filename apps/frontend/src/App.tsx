@@ -26,8 +26,6 @@ const appContentStyles = css`
 `;
 
 function App() {
-  const { colors } = useTheme();
-
   const globalStyles = css`
     body {
       margin: 0;
@@ -36,14 +34,6 @@ function App() {
         "Helvetica Neue", sans-serif;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-
-      background-color: ${colors.white};
-      color: ${colors.white};
-
-      --bg-primary: ${colors.primary};
-      --bg-secondary: ${colors.secondary};
-      --white: ${colors.white};
-      --black: ${colors.black};
     }
 
     code {

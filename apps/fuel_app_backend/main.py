@@ -1,5 +1,5 @@
 from datetime import timedelta
-from typing import List
+from typing import List, Optional
 from fastapi import FastAPI
 from fastapi.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -81,6 +81,12 @@ def vehicles(db=Depends(get_db)):
     return vehicles_db
 
 
+@app.get("/vehicles/{id}", response_model=schemas.Vehicle)
+def vehicle(id: int, db=Depends(get_db)):
+    vehicle_db = crud.get_vehicle(db, id)
+    return vehicle_db
+
+
 @app.post("/vehicles", response_model=schemas.Vehicle)
 def create_vehicle(vehicle: schemas.VehicleCreate, db=Depends(get_db)):
     vehicle_db = crud.create_vehicle(db, vehicle)
@@ -109,9 +115,9 @@ def user(id: int, db=Depends(get_db)):
 
 
 @app.get("/fuel-forms", response_model=List[schemas.FuelForm])
-def fuel_forms(user_id: int = None, vehicle_id: int = None, db=Depends(get_db)):
+def fuel_forms(user_id: Optional[int] = None, vehicle_id: Optional[int] = None, page: Optional[int] = 1, limit: Optional[int] = environment.ITEMS_PER_PAGE, db=Depends(get_db)):
     fuel_forms_db = crud.get_fuel_forms(
-        db, user_id=user_id, vehicle_id=vehicle_id)
+        db, user_id=user_id, vehicle_id=vehicle_id, page=page, limit=limit)
     return fuel_forms_db
 
 

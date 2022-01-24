@@ -1,5 +1,5 @@
 import { IVehicle } from "@/interfaces";
-import VehicleRepository from "@/repositories/VehicleRepository";
+import VehicleRepository from "@/Vehicles/repositories/VehicleRepository";
 import { useEffect, useState } from "react";
 
 export default function useVehicles() {

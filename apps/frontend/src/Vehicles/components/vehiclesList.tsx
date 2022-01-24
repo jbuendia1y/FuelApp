@@ -1,17 +1,14 @@
+import List from "@mui/material/List";
+import stringAvatar from "@/utils/stringAvatar";
 import { css } from "@emotion/react";
+import {
+  Avatar,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
 import useVehicles from "../hooks/useVehicles";
-
-const vehicleItemStyles = css`
-  display: flex;
-  align-items: center;
-`;
-
-const vehicleItemImageStyles = css`
-  background-color: rgb(167, 167, 167);
-  font-size: 0;
-  height: 50px;
-  width: 50px;
-`;
 
 const vehicleItemTextStyles = css`
   flex-grow: 1;
@@ -24,18 +21,20 @@ export default function VehiclesList() {
 
   return (
     <>
-      <div role={"list"}>
+      <List role={"list"}>
         {vehicles?.map((item) => {
           return (
-            <div css={vehicleItemStyles} role={"listitem"} key={item.id}>
-              <img css={vehicleItemImageStyles} alt="vehículo" />
-              <div css={vehicleItemTextStyles}>
-                <h2>{item.placa}</h2>
-              </div>
-            </div>
+            <ListItem key={item.id}>
+              <ListItemButton>
+                <ListItemIcon>
+                  <Avatar {...stringAvatar(item.placa, "-")} />
+                </ListItemIcon>
+                <ListItemText>{item.placa}</ListItemText>
+              </ListItemButton>
+            </ListItem>
           );
         })}
-      </div>
+      </List>
     </>
   );
 }

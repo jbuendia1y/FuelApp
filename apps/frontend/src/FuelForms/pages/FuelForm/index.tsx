@@ -1,8 +1,9 @@
 import useFuelForm from "../../hooks/useFuelForm";
 import FuelUserAvatar from "./components/FuelUserAvatar";
 import FuelReport from "./components/FuelReport";
+import { TypeId } from "@/constants";
 
-export default function FuelForm({ id }: { id: string }) {
+export default function FuelForm({ id }: { id: TypeId }) {
   const { fuelForm } = useFuelForm(id);
 
   if (fuelForm === undefined) return <span>Loading ...</span>;
