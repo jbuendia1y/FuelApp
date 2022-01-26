@@ -1,5 +1,6 @@
 import { TypeId } from "@/constants";
 import { WriteI, ReadI } from "./interfaces";
+import {Page} from "@/interfaces"
 
 export default class BaseRepository<T, I = T>
   implements WriteI<T, I>, ReadI<T>
@@ -23,6 +24,12 @@ export default class BaseRepository<T, I = T>
   }
 
   fetchAll(params?: any): Promise<T[]> {
+    return new Promise((resolve, reject) => {
+      throw new Error("This method is incomplete, write the code .");
+    });
+  }
+
+  paginated(params?:any):Promise<Page<T>>{
     return new Promise((resolve, reject) => {
       throw new Error("This method is incomplete, write the code .");
     });

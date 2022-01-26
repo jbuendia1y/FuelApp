@@ -35,7 +35,7 @@ export default ({mode}) =>{
     define:{
       "process.env":{
         SERVER_BASE_URL : process.env.SERVER_BASE_URL,
-        ENTERPRISE_NAME : process.env.ENTERPRISE_NAME,
+        ENTERPRISE_NAME : process.env.ENTERPRISE_NAME
       }
     }
   })

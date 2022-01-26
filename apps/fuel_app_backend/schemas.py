@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, TypeVar, List
 from pydantic import BaseModel
 
 
@@ -79,3 +79,13 @@ class FuelForm(FuelFormCreate):
 
     class Config:
         orm_mode = True
+
+T = TypeVar("T")
+
+
+class Page(BaseModel):
+    data:List[T]
+    page:int
+    limit:int
+    total_pages:int
+    total_items : int

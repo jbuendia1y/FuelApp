@@ -19,6 +19,7 @@ python-jose = "*"
 python-multipart = "*"
 dropbox = "*"
 psycopg2 = "*"
+fastapi-pagination = {extras = ["all"], version = "*"}
 
 [dev-packages]
 autopep8 = "*"

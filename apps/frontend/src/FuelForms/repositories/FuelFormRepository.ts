@@ -1,6 +1,6 @@
 import { TypeId } from "@/constants";
 import { environment } from "@/environments/environment";
-import { IFuelForm, IFuelFormForm } from "@/interfaces";
+import { IFuelForm, IFuelFormForm, Page } from "@/interfaces";
 import responseCamelizerAxios from "@/utils/responseCamelizerAxios";
 import BaseRepository from "../../repositories/BaseRepository";
 
@@ -34,6 +34,16 @@ class FuelFormRepository extends BaseRepository<IFuelForm, IFuelFormForm> {
           resolve(res.data);
         })
         .catch((err) => reject(err.message));
+    });
+  }
+
+  paginated(params?: any): Promise<Page<IFuelForm>> {
+    return new Promise((resolve, reject) => {
+      responseCamelizerAxios.get(this.BASE_URL,{
+        params,
+      }).then(res => {
+        resolve(res.data)
+      }).catch(err => reject(err.message))
     });
   }
 
