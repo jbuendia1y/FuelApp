@@ -1,7 +1,8 @@
+import { TypeId } from "@/constants";
 import { environment } from "@/environments/environment";
-import { IFuelForm, IFuelFormForm } from "@/interfaces";
+import { IFuelForm, IFuelFormForm, Page } from "@/interfaces";
 import responseCamelizerAxios from "@/utils/responseCamelizerAxios";
-import BaseRepository from "./BaseRepository";
+import BaseRepository from "../../repositories/BaseRepository";
 
 interface FuelFormParams {
   vehicleId?: number;
@@ -35,7 +36,24 @@ class FuelFormRepository extends BaseRepository<IFuelForm, IFuelFormForm> {
     });
   }
 
-  fetchOne(id: string): Promise<IFuelForm> {
+  paginated(params?: {
+    vehicleId?: number;
+    userId?: number;
+    page: number;
+  }): Promise<Page<IFuelForm>> {
+    return new Promise((resolve, reject) => {
+      responseCamelizerAxios
+        .get(this.BASE_URL, {
+          params,
+        })
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((err) => reject(err.message));
+    });
+  }
+
+  fetchOne(id: TypeId): Promise<IFuelForm> {
     return new Promise((resolve, reject) => {
       responseCamelizerAxios
         .get(this.BASE_URL + id)

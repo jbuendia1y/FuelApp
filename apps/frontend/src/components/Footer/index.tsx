@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
-import Container from "../Container";
 import { colors } from "@/constants";
+import { Container } from "@mui/material";
 
 const footerStyles = css`
   background-color: ${colors.secondary};
@@ -25,7 +25,7 @@ const footerListStyles = css`
 export default function Footer() {
   return (
     <footer css={footerStyles}>
-      <Container>
+      <Container maxWidth="sm">
         <div>
           <h2 css={footerTitleStyles}>Lorem</h2>
           <ul css={footerListStyles}>

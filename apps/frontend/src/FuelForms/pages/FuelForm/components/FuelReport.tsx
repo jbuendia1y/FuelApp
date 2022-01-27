@@ -1,6 +1,7 @@
 import { IFuelFormPopulate } from "@/interfaces";
 import dateTimeFormat from "@/utils/dateTimeFormat";
 import { css } from "@emotion/react";
+import { List, ListItem, ListItemText } from "@mui/material";
 
 const fuelReportStyles = css`
   h2 {
@@ -18,26 +19,6 @@ const fuelReportTextStyles = css`
   }
 `;
 
-const listStyles = css`
-  margin: 0;
-  padding-left: 0;
-  list-style: none;
-  max-width: 360px;
-
-  font-size: 1.05em;
-
-  li {
-    padding: 7px;
-    display: flex;
-    justify-content: space-between;
-
-    &:nth-child(2n + 1) {
-      background-color: var(--bg-secondary);
-      color: var(--white);
-    }
-  }
-`;
-
 export default function FuelReport({
   fuelForm,
 }: {
@@ -50,23 +31,33 @@ export default function FuelReport({
         <p>Creado el {dateTimeFormat(fuelForm.createdAt)}</p>
       </div>
 
-      <ul css={listStyles}>
-        <li>
-          Horómetro : <span>{fuelForm.hourMeter}</span>
-        </li>
-        <li>
-          KM X Galón : <span>{fuelForm.kmPerGallon} km</span>
-        </li>
-        <li>
-          Recorrió : <span>{fuelForm.kmTraveled} km</span>
-        </li>
-        <li>
-          Precio X KM : <span>S/{fuelForm.payPerKm}</span>
-        </li>
-        <li>
-          Total a pagar : <span>S/{fuelForm.fullPayment}</span>
-        </li>
-      </ul>
+      <List>
+        <ListItem>
+          <ListItemText>
+            Horómetro : <span>{fuelForm.hourMeter}</span>
+          </ListItemText>
+        </ListItem>
+        <ListItem>
+          <ListItemText>
+            KM X Galón : <span>{fuelForm.kmPerGallon} km</span>
+          </ListItemText>
+        </ListItem>
+        <ListItem>
+          <ListItemText>
+            Recorrió : <span>{fuelForm.kmTraveled} km</span>
+          </ListItemText>
+        </ListItem>
+        <ListItem>
+          <ListItemText>
+            Precio X KM : <span>S/{fuelForm.payPerKm}</span>
+          </ListItemText>
+        </ListItem>
+        <ListItem>
+          <ListItemText>
+            Total a pagar : <span>S/{fuelForm.fullPayment}</span>
+          </ListItemText>
+        </ListItem>
+      </List>
     </div>
   );
 }

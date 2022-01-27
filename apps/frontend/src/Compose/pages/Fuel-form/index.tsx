@@ -1,8 +1,15 @@
-import Button from "@/components/Button";
+import Button from "@mui/material/Button";
 import Form, { FormField, SymbolPrice } from "@/components/Form";
-import FuelFormRepository from "@/repositories/FuelFormRepository";
+import FuelFormRepository from "@/FuelForms/repositories/FuelFormRepository";
 import { ChangeEvent, useEffect, useState } from "react";
 import useVehicles from "@/Vehicles/hooks/useVehicles";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 
 export default function FuelForm() {
   const [hourMeter, setHourmeter] = useState<undefined | number>();
@@ -55,54 +62,51 @@ export default function FuelForm() {
   return (
     <>
       <Form className="fuel-form" onSubmit={handleSubmit}>
-        <FormField className="form-field">
-          <label htmlFor="vehicleId">Vehículo</label>
-          <select required={true} name="vehicleId" id="vehicleId">
-            <option>...</option>
+        <FormControl className="form-field">
+          <InputLabel id="vehicleId-label">Vehículo</InputLabel>
+          <Select
+            labelId="vehicleId-label"
+            id="vehicleId"
+            name="vehicleId"
+            required={true}
+          >
+            <MenuItem>...</MenuItem>
             {vehicles?.map((item) => {
               return (
-                <option key={item.id} value={item.id}>
+                <MenuItem key={item.id} value={item.id}>
                   {item.placa}
-                </option>
+                </MenuItem>
               );
             })}
-          </select>
-        </FormField>
-        <FormField className="form-field">
-          <label htmlFor="hourMeter">Horometro</label>
-          <input
-            type="number"
-            required={true}
-            step={0.001}
-            onChange={handleChange}
-            name="hourMeter"
-            id="hourMeter"
-          />
-        </FormField>
-        <FormField className="form-field">
-          <label htmlFor="gallons">Galones</label>
-          <input
-            type="number"
-            required={true}
-            step={0.001}
-            onChange={handleChange}
-            name="gallons"
-            id="gallons"
-          />
-        </FormField>
-        <FormField className="form-field">
-          <label htmlFor="pricePerGallon">Precio por Galón</label>
-          <SymbolPrice>
-            <input
-              type="number"
-              required={true}
-              step={0.001}
-              onChange={handleChange}
-              name="pricePerGallon"
-              id="pricePerGallon"
-            />
-          </SymbolPrice>
-        </FormField>
+          </Select>
+        </FormControl>
+        <TextField
+          type="number"
+          required={true}
+          id="hourMeter"
+          name="hourMeter"
+          label="Horometro"
+          onChange={handleChange}
+          className="form-field"
+        />
+        <TextField
+          type="number"
+          required={true}
+          id="gallons"
+          name="gallons"
+          label="Galones"
+          onChange={handleChange}
+          className="form-field"
+        />
+        <TextField
+          type="number"
+          required={true}
+          id="pricePerGallon"
+          name="pricePerGallon"
+          label="Precio por Galón"
+          onChange={handleChange}
+          className="form-field"
+        />
         <Button className="fuel-form__button" type="submit">
           Enviar
         </Button>

@@ -1,7 +1,29 @@
 from utils.password import hash_password
 from sqlalchemy.orm.session import Session
+from sqlalchemy.orm.query import Query
 import models
 import schemas
+import environment
+import math
+
+
+def get_pagination(query: Query, page: int, limit: int = environment.ITEMS_PER_PAGE):
+    total_items = query.count()
+    total_pages = math.ceil(total_items / limit)
+
+    q_offset = (page - 1) * limit
+
+    data = query.offset(q_offset).limit(limit).all()
+
+    db_page = schemas.Page(
+        data=data,
+        page=page,
+        limit=limit,
+        total_pages=total_pages,
+        total_items=total_items,
+    )
+
+    return db_page
 
 # User functions
 
@@ -64,7 +86,7 @@ def get_fuel_form(db: Session, fuel_form_id: int):
     return {**fuel_form_db.__dict__, "vehicle": vehicle, "user": user}
 
 
-def get_fuel_forms(db: Session, user_id: int = None, vehicle_id: int = None):
+def get_fuel_forms(db: Session, user_id: int = None, vehicle_id: int = None, page: int = 1, limit: int = environment.ITEMS_PER_PAGE):
     make_query = db.query(models.FuelForm)
     if user_id != None:
         make_query = make_query.filter(models.FuelForm.user_id == user_id)
@@ -72,7 +94,9 @@ def get_fuel_forms(db: Session, user_id: int = None, vehicle_id: int = None):
         make_query = make_query.filter(
             models.FuelForm.vehicle_id == vehicle_id)
 
-    return make_query.all()
+    f_query = get_pagination(make_query, page, limit)
+
+    return f_query
 
 
 def create_fuel_form(db: Session, fuel_form: schemas.FuelFormCreate):

@@ -1,5 +1,13 @@
 import { Roles, TypeId } from "@/constants";
 
+export interface Page<T>{
+  data:T[]
+  page:number;
+  limit:number;
+  totalPages:number;
+  totalItems:number;
+}
+
 export interface IVehicleForm {
   placa: string;
 }
@@ -25,6 +33,12 @@ export interface IFuelForm extends IFuelFormForm {
   createdAt: string;
 
   userId: TypeId;
+}
+
+export interface IResponseFuelForm {
+  items : IFuelForm[]
+  page:number;
+  maxPage:number;
 }
 
 export interface IFuelFormPopulate extends IFuelForm {

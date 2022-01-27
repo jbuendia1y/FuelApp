@@ -1,13 +1,9 @@
-import Button from "@/components/Button";
-import Form, { FormField } from "@/components/Form";
-import VehicleRepository from "@/repositories/VehicleRepository";
+import Button from "@mui/material/Button";
+import Form from "@/components/Form";
+import VehicleRepository from "@/Vehicles/repositories/VehicleRepository";
 import { css } from "@emotion/react";
 import { ChangeEvent, useEffect, useState } from "react";
-
-const vehicleComposeStyles = css`
-  display: flex;
-  align-items: flex-end;
-`;
+import { Container, TextField } from "@mui/material";
 
 export default function ComposeVehicle() {
   const [placa, setPlaca] = useState<undefined | string>();
@@ -35,19 +31,25 @@ export default function ComposeVehicle() {
   }, [onDataSubmit]);
 
   return (
-    <Form onSubmit={handleSubmit} css={vehicleComposeStyles}>
-      <FormField>
-        <label htmlFor="placa">Placa</label>
-        <input
-          onChange={handleChange}
-          required={true}
-          name="placa"
+    <Form onSubmit={handleSubmit}>
+      <Container
+        maxWidth="sm"
+        sx={{
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <TextField
+          label="Placa"
           id="placa"
-          type="text"
-          maxLength={8}
-        />
-      </FormField>
-      <Button>Añadir</Button>
+          name="placa"
+          required={true}
+          onChange={handleChange}
+        ></TextField>
+        <Button variant="contained" type="submit">
+          Añadir
+        </Button>
+      </Container>
     </Form>
   );
 }

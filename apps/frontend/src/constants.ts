@@ -9,13 +9,11 @@ export type Roles = "Conductor" | "Admin" | "Supervisor";
 export type TypeId = number
 
 // Styles Constants
-const lightTheme = {
+
+
+export const colors= {
     primary:"#CE1212",
     secondary:"#810000",
     white:"#EEEBDD",
     black:"#1B1717",
-}
-
-export const colors= {
-    ...lightTheme
 }

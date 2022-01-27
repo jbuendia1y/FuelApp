@@ -1,9 +1,12 @@
-import NavItem from "./NavItem";
+import { MenuItem } from "@mui/material";
+import { Link } from "react-router-dom";
 
 export default function WithoutAuth() {
   return (
     <>
-      <NavItem href="/login">Iniciar Sessión</NavItem>
+      <Link to="/login">
+        <MenuItem>Iniciar Sessión</MenuItem>
+      </Link>
     </>
   );
 }
