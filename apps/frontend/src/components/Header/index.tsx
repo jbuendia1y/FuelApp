@@ -12,8 +12,6 @@ const headerLogoStyles = css`
 export default function Header() {
   const { location } = useHistory();
 
-  console.log(location);
-
   return (
     <header>
       <AppBar position="sticky">

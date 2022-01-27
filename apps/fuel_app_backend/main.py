@@ -114,7 +114,7 @@ def user(id: int, db=Depends(get_db)):
 # FuelForms
 
 
-@app.get("/fuel-forms", response_model=schemas.Page[schemas.FuelForm])
+@app.get("/fuel-forms", response_model=schemas.Page)
 def fuel_forms(user_id: Optional[int] = None, vehicle_id: Optional[int] = None, page: Optional[int] = 1, limit: Optional[int] = environment.ITEMS_PER_PAGE, db=Depends(get_db)):
     fuel_forms_db = crud.get_fuel_forms(
         db, user_id=user_id, vehicle_id=vehicle_id, page=page, limit=limit)

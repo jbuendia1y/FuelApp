@@ -7,7 +7,6 @@ import BaseRepository from "../../repositories/BaseRepository";
 interface FuelFormParams {
   vehicleId?: number;
   userId?: number;
-  page: number;
 }
 
 class FuelFormRepository extends BaseRepository<IFuelForm, IFuelFormForm> {
@@ -37,13 +36,20 @@ class FuelFormRepository extends BaseRepository<IFuelForm, IFuelFormForm> {
     });
   }
 
-  paginated(params?: any): Promise<Page<IFuelForm>> {
+  paginated(params?: {
+    vehicleId?: number;
+    userId?: number;
+    page: number;
+  }): Promise<Page<IFuelForm>> {
     return new Promise((resolve, reject) => {
-      responseCamelizerAxios.get(this.BASE_URL,{
-        params,
-      }).then(res => {
-        resolve(res.data)
-      }).catch(err => reject(err.message))
+      responseCamelizerAxios
+        .get(this.BASE_URL, {
+          params,
+        })
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((err) => reject(err.message));
     });
   }
 

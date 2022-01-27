@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
 import { colors } from "@/constants";
 import {
   Card,
@@ -15,7 +16,7 @@ import {
 import { ChangeEvent } from "react";
 
 export default function FuelForms() {
-  const { fuelForms, page, changePage } = useFuelForms({
+  const { fuelForms, page, changePage, totalPages } = useFuelForms({
     reverse: true,
   });
 
@@ -24,8 +25,18 @@ export default function FuelForms() {
   };
 
   return (
-    <div>
-      <Box>
+    <Container
+      maxWidth="sm"
+      sx={{
+        height: "100%",
+      }}
+    >
+      <Box
+        sx={{
+          maxHeight: "85%",
+        }}
+        overflow={"auto"}
+      >
         {fuelForms?.map((fuelForm) => {
           return (
             <Card key={fuelForm.id}>
@@ -71,12 +82,15 @@ export default function FuelForms() {
       </Box>
       <Stack spacing={2}>
         <Pagination
-          count={15}
+          count={totalPages}
           color="primary"
           page={page}
+          showFirstButton
+          showLastButton
+          siblingCount={0}
           onChange={handleChange}
         />
       </Stack>
-    </div>
+    </Container>
   );
 }

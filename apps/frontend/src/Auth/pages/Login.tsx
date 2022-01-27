@@ -1,10 +1,10 @@
 import Button from "@mui/material/Button";
 import Form from "@/components/Form";
-import { css } from "@emotion/react";
 
 import { useHistory } from "react-router-dom";
 import useAuth from "@/Auth/hooks/useAuth";
 import { Box, TextField } from "@mui/material";
+import Container from "@mui/material/Container";
 import { useState } from "react";
 
 export default function Login() {
@@ -27,10 +27,12 @@ export default function Login() {
   };
 
   return (
-    <Box
+    <Container
+      maxWidth="sm"
       sx={{
-        width: 360,
-        margin: "0 auto",
+        height: "500px",
+        display: "grid",
+        placeContent: "center",
       }}
     >
       <Form onSubmit={onSubmit}>
@@ -42,6 +44,7 @@ export default function Login() {
             setDocument(e.target.value);
           }}
           fullWidth
+          margin="dense"
         />
         <TextField
           type="password"
@@ -52,11 +55,12 @@ export default function Login() {
             setPassword(e.target.value);
           }}
           fullWidth
+          margin="dense"
         />
         <Button fullWidth variant="contained" type="submit">
           Iniciar Sessión
         </Button>
       </Form>
-    </Box>
+    </Container>
   );
 }

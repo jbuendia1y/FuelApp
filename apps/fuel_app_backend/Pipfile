@@ -18,8 +18,7 @@ openpyxl = "*"
 python-jose = "*"
 python-multipart = "*"
 dropbox = "*"
-psycopg2 = "*"
-fastapi-pagination = {extras = ["all"], version = "*"}
+psycopg2-binary = "*"
 
 [dev-packages]
 autopep8 = "*"

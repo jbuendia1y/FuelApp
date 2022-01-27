@@ -11,20 +11,20 @@ export default function useFuelForm(id: TypeId) {
 
   useEffect(() => {
     setLoading(true);
-    (async()=>{
-      const baseFuelForm = await FuelFormRepository.fetchOne(id)
-      const vehicle = await VehicleRepository.fetchOne(baseFuelForm.vehicleId)
-      const user = await UserRepository.fetchOne(baseFuelForm.userId)
+    (async () => {
+      const baseFuelForm = await FuelFormRepository.fetchOne(id);
+      const vehicle = await VehicleRepository.fetchOne(baseFuelForm.vehicleId);
+      const user = await UserRepository.fetchOne(baseFuelForm.userId);
 
       const fuelFormPopulate = {
         ...baseFuelForm,
         vehicle,
-        user
-      }
+        user,
+      };
 
       setFuelForm(fuelFormPopulate);
       setLoading(false);
-    })()
+    })();
   }, []);
 
   return { fuelForm, loading };

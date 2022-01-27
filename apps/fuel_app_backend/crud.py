@@ -4,14 +4,18 @@ from sqlalchemy.orm.query import Query
 import models
 import schemas
 import environment
+import math
 
-def get_pagination(query:Query,page:int,limit:int=environment.ITEMS_PER_PAGE):
+
+def get_pagination(query: Query, page: int, limit: int = environment.ITEMS_PER_PAGE):
     total_items = query.count()
-    total_pages = total_items / limit
+    total_pages = math.ceil(total_items / limit)
 
-    data = query.offset(page).limit(limit).all()
+    q_offset = (page - 1) * limit
 
-    db_page =schemas.Page(
+    data = query.offset(q_offset).limit(limit).all()
+
+    db_page = schemas.Page(
         data=data,
         page=page,
         limit=limit,
@@ -90,7 +94,7 @@ def get_fuel_forms(db: Session, user_id: int = None, vehicle_id: int = None, pag
         make_query = make_query.filter(
             models.FuelForm.vehicle_id == vehicle_id)
 
-    f_query = get_pagination(make_query,page,limit)
+    f_query = get_pagination(make_query, page, limit)
 
     return f_query
 
