@@ -20,7 +20,9 @@ export default function FuelForms() {
         path={`${FUEL_FORMS_ROOT_PATH}/:id`}
         render={(props) => {
           return (
-            <FuelFormPopulate id={props.match.params.id}></FuelFormPopulate>
+            <FuelFormPopulate
+              id={parseInt(props.match.params.id)}
+            ></FuelFormPopulate>
           );
         }}
         exact
