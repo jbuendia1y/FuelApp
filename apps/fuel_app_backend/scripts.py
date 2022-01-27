@@ -147,7 +147,7 @@ def load_data_from_data_folder(user_admin_id: int, data_files: list):
         print("VEHICLES ALREADY EXIST IN DB")
 
     print("Loading fuel forms")
-    if len(crud.get_fuel_forms(db)) == 0:
+    if len(crud.get_fuel_forms(db).data) == 0:
         save_fuel_forms(user_admin_id, data_files)
         print("Fuel forms loaded")
     else:
